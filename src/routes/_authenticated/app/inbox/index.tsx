@@ -14,7 +14,17 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/app/empty-state";
 import { Button } from "@/components/ui/button";
 import { ConversationView } from "@/components/inbox/conversation-view";
-import { formatDistanceToNow } from "@/lib/crm/context";
+
+function formatDistanceToNow(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return "agora";
+  if (m < 60) return `${m}m`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h`;
+  const d = Math.floor(h / 24);
+  return `${d}d`;
+}
 
 export const Route = createFileRoute("/_authenticated/app/inbox/")({ component: InboxPage });
 
