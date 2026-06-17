@@ -2279,6 +2279,701 @@ export type Database = {
           },
         ]
       }
+      mgmt_activity_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          company_id: string
+          created_at: string
+          data: Json
+          entity_id: string | null
+          entity_kind: string | null
+          id: string
+          source: string | null
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          company_id: string
+          created_at?: string
+          data?: Json
+          entity_id?: string | null
+          entity_kind?: string | null
+          id?: string
+          source?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          company_id?: string
+          created_at?: string
+          data?: Json
+          entity_id?: string | null
+          entity_kind?: string | null
+          id?: string
+          source?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_activity_log_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mgmt_admin_logs: {
+        Row: {
+          actor_id: string | null
+          company_id: string
+          created_at: string
+          data: Json
+          event_type: string
+          id: string
+          ip_address: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          company_id: string
+          created_at?: string
+          data?: Json
+          event_type: string
+          id?: string
+          ip_address?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          company_id?: string
+          created_at?: string
+          data?: Json
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_admin_logs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mgmt_appointments: {
+        Row: {
+          attendees: Json
+          company_id: string
+          created_at: string
+          created_by: string | null
+          customer_id: string | null
+          deal_id: string | null
+          description: string | null
+          end_at: string | null
+          google_event_id: string | null
+          id: string
+          kind: string
+          lead_id: string | null
+          location: string | null
+          owner_id: string | null
+          start_at: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          attendees?: Json
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          deal_id?: string | null
+          description?: string | null
+          end_at?: string | null
+          google_event_id?: string | null
+          id?: string
+          kind?: string
+          lead_id?: string | null
+          location?: string | null
+          owner_id?: string | null
+          start_at: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          attendees?: Json
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          deal_id?: string | null
+          description?: string | null
+          end_at?: string | null
+          google_event_id?: string | null
+          id?: string
+          kind?: string
+          lead_id?: string | null
+          location?: string | null
+          owner_id?: string | null
+          start_at?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_appointments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mgmt_appointments_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mgmt_appointments_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "crm_deals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mgmt_appointments_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mgmt_commission_rules: {
+        Row: {
+          active: boolean
+          company_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          max_deal_value: number | null
+          min_deal_value: number | null
+          name: string
+          pipeline_id: string | null
+          priority: number
+          rule_type: string
+          scope: string
+          scope_id: string | null
+          updated_at: string
+          value: number
+        }
+        Insert: {
+          active?: boolean
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          max_deal_value?: number | null
+          min_deal_value?: number | null
+          name: string
+          pipeline_id?: string | null
+          priority?: number
+          rule_type?: string
+          scope?: string
+          scope_id?: string | null
+          updated_at?: string
+          value?: number
+        }
+        Update: {
+          active?: boolean
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          max_deal_value?: number | null
+          min_deal_value?: number | null
+          name?: string
+          pipeline_id?: string | null
+          priority?: number
+          rule_type?: string
+          scope?: string
+          scope_id?: string | null
+          updated_at?: string
+          value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_commission_rules_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mgmt_commission_rules_pipeline_id_fkey"
+            columns: ["pipeline_id"]
+            isOneToOne: false
+            referencedRelation: "crm_pipelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mgmt_commissions: {
+        Row: {
+          amount: number
+          base_amount: number
+          company_id: string
+          created_at: string
+          deal_id: string | null
+          id: string
+          notes: string | null
+          paid_amount: number
+          paid_at: string | null
+          rule_id: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount?: number
+          base_amount?: number
+          company_id: string
+          created_at?: string
+          deal_id?: string | null
+          id?: string
+          notes?: string | null
+          paid_amount?: number
+          paid_at?: string | null
+          rule_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          base_amount?: number
+          company_id?: string
+          created_at?: string
+          deal_id?: string | null
+          id?: string
+          notes?: string | null
+          paid_amount?: number
+          paid_at?: string | null
+          rule_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_commissions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mgmt_commissions_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "crm_deals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mgmt_commissions_rule_id_fkey"
+            columns: ["rule_id"]
+            isOneToOne: false
+            referencedRelation: "mgmt_commission_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mgmt_dashboard_layouts: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+          widgets: Json
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id: string
+          widgets?: Json
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+          widgets?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_dashboard_layouts_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mgmt_goals: {
+        Row: {
+          company_id: string
+          created_at: string
+          created_by: string | null
+          end_at: string
+          id: string
+          kind: string
+          name: string
+          notes: string | null
+          period: string
+          pipeline_id: string | null
+          scope: string
+          scope_id: string | null
+          start_at: string
+          target_value: number
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          end_at: string
+          id?: string
+          kind?: string
+          name: string
+          notes?: string | null
+          period?: string
+          pipeline_id?: string | null
+          scope?: string
+          scope_id?: string | null
+          start_at?: string
+          target_value?: number
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          end_at?: string
+          id?: string
+          kind?: string
+          name?: string
+          notes?: string | null
+          period?: string
+          pipeline_id?: string | null
+          scope?: string
+          scope_id?: string | null
+          start_at?: string
+          target_value?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_goals_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mgmt_goals_pipeline_id_fkey"
+            columns: ["pipeline_id"]
+            isOneToOne: false
+            referencedRelation: "crm_pipelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mgmt_notifications: {
+        Row: {
+          body: string | null
+          channel: string
+          company_id: string
+          created_at: string
+          entity_id: string | null
+          entity_kind: string | null
+          id: string
+          kind: string
+          link: string | null
+          read_at: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          channel?: string
+          company_id: string
+          created_at?: string
+          entity_id?: string | null
+          entity_kind?: string | null
+          id?: string
+          kind: string
+          link?: string | null
+          read_at?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          channel?: string
+          company_id?: string
+          created_at?: string
+          entity_id?: string | null
+          entity_kind?: string | null
+          id?: string
+          kind?: string
+          link?: string | null
+          read_at?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_notifications_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mgmt_reports: {
+        Row: {
+          columns: Json
+          company_id: string
+          created_at: string
+          filters: Json
+          id: string
+          is_shared: boolean
+          name: string
+          owner_id: string | null
+          report_type: string
+          sort: Json
+          updated_at: string
+        }
+        Insert: {
+          columns?: Json
+          company_id: string
+          created_at?: string
+          filters?: Json
+          id?: string
+          is_shared?: boolean
+          name: string
+          owner_id?: string | null
+          report_type: string
+          sort?: Json
+          updated_at?: string
+        }
+        Update: {
+          columns?: Json
+          company_id?: string
+          created_at?: string
+          filters?: Json
+          id?: string
+          is_shared?: boolean
+          name?: string
+          owner_id?: string | null
+          report_type?: string
+          sort?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_reports_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mgmt_tasks: {
+        Row: {
+          archived: boolean
+          company_id: string
+          completed_at: string | null
+          created_at: string
+          created_by: string | null
+          customer_id: string | null
+          deal_id: string | null
+          description: string | null
+          due_at: string | null
+          id: string
+          lead_id: string | null
+          owner_id: string | null
+          priority: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          archived?: boolean
+          company_id: string
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          deal_id?: string | null
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          lead_id?: string | null
+          owner_id?: string | null
+          priority?: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          archived?: boolean
+          company_id?: string
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          deal_id?: string | null
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          lead_id?: string | null
+          owner_id?: string | null
+          priority?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_tasks_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mgmt_tasks_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mgmt_tasks_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "crm_deals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mgmt_tasks_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mgmt_team_members: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          team_id: string
+          user_id: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          team_id: string
+          user_id: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          team_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_team_members_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mgmt_team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "mgmt_teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mgmt_teams: {
+        Row: {
+          color: string | null
+          company_id: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          manager_id: string | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          manager_id?: string | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          manager_id?: string | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mgmt_teams_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -2287,6 +2982,7 @@ export type Database = {
           email: string
           full_name: string
           id: string
+          last_seen_at: string | null
           phone: string | null
           updated_at: string
         }
@@ -2297,6 +2993,7 @@ export type Database = {
           email?: string
           full_name?: string
           id: string
+          last_seen_at?: string | null
           phone?: string | null
           updated_at?: string
         }
@@ -2307,6 +3004,7 @@ export type Database = {
           email?: string
           full_name?: string
           id?: string
+          last_seen_at?: string | null
           phone?: string | null
           updated_at?: string
         }
