@@ -6,6 +6,12 @@ import {
   Building2,
   Shield,
   LogOut,
+  UserCircle,
+  Tag,
+  Workflow,
+  Contact,
+  Zap,
+  BarChart3,
 } from "lucide-react";
 import {
   Sidebar,
@@ -28,6 +34,18 @@ const mainNav = [
   { title: "Dashboard", url: "/app", icon: LayoutDashboard, exact: true },
   { title: "Usuários", url: "/app/users", icon: Users },
   { title: "Empresa", url: "/app/settings", icon: Building2 },
+];
+
+const crmNav = [
+  { title: "Visão geral", url: "/app/crm", icon: BarChart3, exact: true },
+  { title: "Leads", url: "/app/crm/leads", icon: UserCircle },
+  { title: "Clientes", url: "/app/crm/customers", icon: Users },
+  { title: "Empresas", url: "/app/crm/companies", icon: Building2 },
+  { title: "Contatos", url: "/app/crm/contacts", icon: Contact },
+  { title: "Funis", url: "/app/crm/pipelines", icon: Workflow },
+  { title: "Tags", url: "/app/crm/tags", icon: Tag },
+  { title: "Automações", url: "/app/crm/automations", icon: Zap },
+  { title: "Configurações", url: "/app/crm/settings", icon: Settings },
 ];
 
 const settingsNav = [
@@ -74,6 +92,25 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>CRM</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {crmNav.map((item) => (
+                <SidebarMenuItem key={item.url}>
+                  <SidebarMenuButton asChild isActive={isActive(item.url, item.exact)} tooltip={item.title}>
+                    <Link to={item.url} className="flex items-center gap-2">
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
 
         <SidebarGroup>
           <SidebarGroupLabel>Conta</SidebarGroupLabel>
