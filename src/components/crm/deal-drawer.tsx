@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TimelineList } from "@/components/crm/timeline-list";
 import { NotesList } from "@/components/crm/notes-list";
 import { TagPicker } from "@/components/crm/tag-picker";
+import { CustomFieldsForm } from "@/components/crm/custom-fields-form";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 
@@ -125,10 +126,11 @@ export function DealDrawer({ open, onOpenChange, dealId, pipelineId, initialStag
         </SheetHeader>
 
         <Tabs defaultValue="data" className="mt-4">
-          <TabsList className="grid grid-cols-3">
+          <TabsList className="grid grid-cols-4">
             <TabsTrigger value="data">Dados</TabsTrigger>
             <TabsTrigger value="timeline" disabled={isNew}>Timeline</TabsTrigger>
             <TabsTrigger value="notes" disabled={isNew}>Notas</TabsTrigger>
+            <TabsTrigger value="fields" disabled={isNew}>Campos</TabsTrigger>
           </TabsList>
 
           <TabsContent value="data" className="space-y-3 mt-4">
@@ -159,6 +161,7 @@ export function DealDrawer({ open, onOpenChange, dealId, pipelineId, initialStag
 
           <TabsContent value="timeline" className="mt-4">{dealId && <TimelineList entityKind="deal" entityId={dealId} />}</TabsContent>
           <TabsContent value="notes" className="mt-4">{dealId && <NotesList entityKind="deal" entityId={dealId} />}</TabsContent>
+          <TabsContent value="fields" className="mt-4">{dealId && <CustomFieldsForm entityKind="deal" entityId={dealId} />}</TabsContent>
         </Tabs>
       </SheetContent>
     </Sheet>

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Plus, Search, Download } from "lucide-react";
+import { Plus, Search, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompanyId, formatCurrency, formatDate } from "@/lib/crm/context";
 import { PageHeader } from "@/components/app/page-header";
@@ -12,7 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { LeadDrawer } from "@/components/crm/lead-drawer";
 import { EmptyState } from "@/components/app/empty-state";
-import Papa from "papaparse";
+import { ExportButton } from "@/components/crm/export-button";
+import { ImportWizard } from "@/components/crm/import-wizard";
 
 export const Route = createFileRoute("/_authenticated/app/crm/leads")({
   component: LeadsPage,
@@ -22,6 +23,7 @@ function LeadsPage() {
   const companyId = useCompanyId();
   const [search, setSearch] = useState("");
   const [drawerLead, setDrawerLead] = useState<string | "new" | null>(null);
+  const [importOpen, setImportOpen] = useState(false);
 
   const { data: leads = [] } = useQuery({
     queryKey: ["crm-leads", companyId, search],
@@ -37,16 +39,11 @@ function LeadsPage() {
 
   const total = useMemo(() => leads.reduce((s, l) => s + Number(l.estimated_value || 0), 0), [leads]);
 
-  const exportCsv = () => {
-    const csv = Papa.unparse(leads.map((l) => ({
-      Nome: l.name, Empresa: l.company_text, Email: l.email, Telefone: l.phone,
-      WhatsApp: l.whatsapp, Cidade: l.city, Estado: l.state, Valor: l.estimated_value, Status: l.status, Criado: l.created_at,
-    })));
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url; a.download = "leads.csv"; a.click(); URL.revokeObjectURL(url);
-  };
+  const exportRows = useMemo(() => leads.map((l) => ({
+    Nome: l.name, Empresa: l.company_text ?? "", Email: l.email ?? "", Telefone: l.phone ?? "",
+    WhatsApp: l.whatsapp ?? "", Cidade: l.city ?? "", Estado: l.state ?? "",
+    Valor: Number(l.estimated_value ?? 0), Status: l.status, Criado: l.created_at,
+  })), [leads]);
 
   return (
     <div className="space-y-6">
@@ -55,7 +52,8 @@ function LeadsPage() {
         description={`${leads.length} leads • ${formatCurrency(total)} em pipeline estimado`}
         actions={
           <>
-            <Button variant="outline" onClick={exportCsv}><Download className="h-4 w-4 mr-1" /> Exportar</Button>
+            <Button variant="outline" onClick={() => setImportOpen(true)}><Upload className="h-4 w-4 mr-1" /> Importar</Button>
+            <ExportButton rows={exportRows} filename="leads" title="Leads" />
             <Button onClick={() => setDrawerLead("new")}><Plus className="h-4 w-4 mr-1" /> Novo Lead</Button>
           </>
         }
@@ -99,6 +97,7 @@ function LeadsPage() {
       </Card>
 
       <LeadDrawer open={drawerLead !== null} onOpenChange={(o) => !o && setDrawerLead(null)} leadId={drawerLead} />
+      <ImportWizard open={importOpen} onOpenChange={setImportOpen} entity="lead" />
     </div>
   );
 }
