@@ -161,6 +161,7 @@ export function DealDrawer({ open, onOpenChange, dealId, pipelineId, initialStag
 
           <TabsContent value="timeline" className="mt-4">{dealId && <TimelineList entityKind="deal" entityId={dealId} />}</TabsContent>
           <TabsContent value="notes" className="mt-4">{dealId && <NotesList entityKind="deal" entityId={dealId} />}</TabsContent>
+          <TabsContent value="fields" className="mt-4">{dealId && <CustomFieldsForm entityKind="deal" entityId={dealId} />}</TabsContent>
         </Tabs>
       </SheetContent>
     </Sheet>
