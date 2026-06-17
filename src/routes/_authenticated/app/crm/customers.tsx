@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Plus, Trash2, Edit2 } from "lucide-react";
+import { Plus, Trash2, Edit2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompanyId, formatDate } from "@/lib/crm/context";
 import { useAuth } from "@/lib/auth";
@@ -11,8 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { EmptyState } from "@/components/app/empty-state";
+import { ExportButton } from "@/components/crm/export-button";
+import { ImportWizard } from "@/components/crm/import-wizard";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/app/crm/customers")({
