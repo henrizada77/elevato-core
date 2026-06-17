@@ -141,7 +141,7 @@ function ChatWindow({ threadId, scrollRef }: { threadId: string; scrollRef: Reac
     messages: history as any,
     transport: new DefaultChatTransport({
       api: "/api/chat",
-      headers: async () => {
+      headers: async (): Promise<Record<string, string>> => {
         const { data } = await supabase.auth.getSession();
         return data.session ? { Authorization: `Bearer ${data.session.access_token}` } : {};
       },
