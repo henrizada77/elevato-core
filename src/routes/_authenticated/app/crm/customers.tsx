@@ -65,9 +65,20 @@ function CustomersPage() {
     qc.invalidateQueries({ queryKey: ["crm-customers"] });
   };
 
+  const exportRows = useMemo(() => customers.map((c: any) => ({
+    Nome: c.name, Email: c.email ?? "", Telefone: c.phone ?? "", WhatsApp: c.whatsapp ?? "",
+    Documento: c.document ?? "", Cidade: c.city ?? "", Estado: c.state ?? "", Criado: c.created_at,
+  })), [customers]);
+
   return (
     <div className="space-y-6">
-      <PageHeader title="Clientes" description={`${customers.length} clientes ativos`} actions={<Button onClick={openNew}><Plus className="h-4 w-4 mr-1" /> Novo Cliente</Button>} />
+      <PageHeader title="Clientes" description={`${customers.length} clientes ativos`} actions={
+        <>
+          <Button variant="outline" onClick={() => setImportOpen(true)}><Upload className="h-4 w-4 mr-1" /> Importar</Button>
+          <ExportButton rows={exportRows} filename="clientes" title="Clientes" />
+          <Button onClick={openNew}><Plus className="h-4 w-4 mr-1" /> Novo Cliente</Button>
+        </>
+      } />
       <Card className="shadow-soft">
         {customers.length === 0 ? (
           <EmptyState icon={Plus} title="Nenhum cliente" description="Converta leads ou crie clientes manualmente." action={<Button onClick={openNew}>Criar Cliente</Button>} />
