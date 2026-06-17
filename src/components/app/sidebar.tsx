@@ -7,7 +7,6 @@ import {
   Shield,
   LogOut,
   UserCircle,
-  Briefcase,
   Tag,
   Workflow,
   Contact,

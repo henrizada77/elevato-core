@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
@@ -64,8 +64,8 @@ export function LeadDrawer({ open, onOpenChange, leadId }: Props) {
   const [tags, setTags] = useState<string[]>([]);
   const current: Record<string, any> = isNew ? form : { ...(lead ?? {}), ...form };
 
-  // sync once
-  useState(() => { setTags(tagIds); });
+  // sync once when lead loads
+  useEffect(() => { setTags(tagIds); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [tagIds.join(",")]);
 
   const setField = (k: string, v: unknown) => setForm((f) => ({ ...f, [k]: v }));
 
