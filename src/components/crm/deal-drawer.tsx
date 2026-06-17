@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TimelineList } from "@/components/crm/timeline-list";
 import { NotesList } from "@/components/crm/notes-list";
 import { TagPicker } from "@/components/crm/tag-picker";
+import { CustomFieldsForm } from "@/components/crm/custom-fields-form";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 
