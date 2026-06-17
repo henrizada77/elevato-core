@@ -55,10 +55,10 @@ export function ConversationView({ conversationId }: Props) {
   }, [conversationId, qc]);
 
   const handleSend = async () => {
-    if (!text.trim()) return;
+    if (!text.trim() || !conv) return;
     if (isInternal) {
       const { error } = await supabase.from("inbox_messages").insert({
-        company_id: conv?.company_id, conversation_id: conversationId,
+        company_id: conv.company_id, conversation_id: conversationId,
         direction: "internal", msg_type: "text", content: text,
         sender_id: user?.id, is_internal: true,
       });
