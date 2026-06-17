@@ -126,10 +126,11 @@ export function DealDrawer({ open, onOpenChange, dealId, pipelineId, initialStag
         </SheetHeader>
 
         <Tabs defaultValue="data" className="mt-4">
-          <TabsList className="grid grid-cols-3">
+          <TabsList className="grid grid-cols-4">
             <TabsTrigger value="data">Dados</TabsTrigger>
             <TabsTrigger value="timeline" disabled={isNew}>Timeline</TabsTrigger>
             <TabsTrigger value="notes" disabled={isNew}>Notas</TabsTrigger>
+            <TabsTrigger value="fields" disabled={isNew}>Campos</TabsTrigger>
           </TabsList>
 
           <TabsContent value="data" className="space-y-3 mt-4">
