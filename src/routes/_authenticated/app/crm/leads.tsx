@@ -97,6 +97,7 @@ function LeadsPage() {
       </Card>
 
       <LeadDrawer open={drawerLead !== null} onOpenChange={(o) => !o && setDrawerLead(null)} leadId={drawerLead} />
+      <ImportWizard open={importOpen} onOpenChange={setImportOpen} entity="lead" />
     </div>
   );
 }
