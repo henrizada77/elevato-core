@@ -62,7 +62,7 @@ export function LeadDrawer({ open, onOpenChange, leadId }: Props) {
 
   const [form, setForm] = useState<Record<string, unknown>>({});
   const [tags, setTags] = useState<string[]>([]);
-  const current = isNew ? form : { ...lead, ...form };
+  const current: Record<string, any> = isNew ? form : { ...(lead ?? {}), ...form };
 
   // sync once
   useState(() => { setTags(tagIds); });

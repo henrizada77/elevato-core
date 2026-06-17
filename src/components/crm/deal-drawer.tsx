@@ -69,7 +69,7 @@ export function DealDrawer({ open, onOpenChange, dealId, pipelineId, initialStag
     }
   }, [open, isNew, pipelineId, initialStageId]);
 
-  const current = isNew ? form : { ...deal, ...form };
+  const current: Record<string, any> = isNew ? form : { ...(deal ?? {}), ...form };
 
   const save = async () => {
     if (!companyId) return;

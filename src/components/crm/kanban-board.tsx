@@ -70,7 +70,7 @@ export function KanbanBoard({ pipelineId, onOpenDeal, onCreateDeal }: Props) {
     const updates: Record<string, unknown> = { stage_id: newStageId };
     if (targetStage?.kind === "won") { updates.status = "won"; updates.closed_at = new Date().toISOString(); }
     if (targetStage?.kind === "lost") { updates.status = "lost"; updates.closed_at = new Date().toISOString(); }
-    const { error } = await supabase.from("crm_deals").update(updates).eq("id", dealId);
+    const { error } = await supabase.from("crm_deals").update(updates as never).eq("id", dealId);
     if (error) { toast.error(error.message); qc.invalidateQueries({ queryKey: ["crm-deals-board", pipelineId] }); return; }
     qc.invalidateQueries({ queryKey: ["crm-deals-board", pipelineId] });
   };
