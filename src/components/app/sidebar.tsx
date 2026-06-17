@@ -12,6 +12,11 @@ import {
   Contact,
   Zap,
   BarChart3,
+  Inbox,
+  Sparkles,
+  Store,
+  CreditCard,
+  KeyRound,
 } from "lucide-react";
 import {
   Sidebar,
