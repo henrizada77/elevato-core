@@ -187,7 +187,7 @@ function SignupForm({ onSuccess }: { onSuccess: () => void }) {
     if (data.session) {
       const { error: rpcError } = await supabase.rpc("create_company_with_owner", {
         p_name: companyName,
-        p_phone: phone || null,
+        p_phone: phone || undefined,
         p_email: email,
       });
       if (rpcError) {

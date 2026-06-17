@@ -38,8 +38,8 @@ function Onboarding() {
     setSubmitting(true);
     const { error } = await supabase.rpc("create_company_with_owner", {
       p_name: name,
-      p_phone: phone || null,
-      p_email: null,
+      p_phone: phone || undefined,
+      p_email: undefined,
     });
     setSubmitting(false);
     if (error) {
