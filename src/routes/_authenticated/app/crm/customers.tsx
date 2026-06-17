@@ -122,6 +122,8 @@ function CustomersPage() {
           <Button onClick={save}>Salvar</Button>
         </DialogContent>
       </Dialog>
+
+      <ImportWizard open={importOpen} onOpenChange={setImportOpen} entity="customer" />
     </div>
   );
 }
