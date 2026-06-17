@@ -12,6 +12,11 @@ import {
   Contact,
   Zap,
   BarChart3,
+  Inbox,
+  Sparkles,
+  Store,
+  CreditCard,
+  KeyRound,
 } from "lucide-react";
 import {
   Sidebar,
@@ -32,8 +37,15 @@ import { Button } from "@/components/ui/button";
 
 const mainNav = [
   { title: "Dashboard", url: "/app", icon: LayoutDashboard, exact: true },
+  { title: "Assistente AI", url: "/app/assistant", icon: Sparkles },
+  { title: "Marketplace", url: "/app/marketplace", icon: Store },
   { title: "Usuários", url: "/app/users", icon: Users },
   { title: "Empresa", url: "/app/settings", icon: Building2 },
+];
+
+const inboxNav = [
+  { title: "Caixa de entrada", url: "/app/inbox", icon: Inbox, exact: true },
+  { title: "Filas", url: "/app/inbox/queues", icon: Workflow },
 ];
 
 const crmNav = [
@@ -49,7 +61,9 @@ const crmNav = [
 ];
 
 const settingsNav = [
-  { title: "Configurações", url: "/app/preferences", icon: Settings },
+  { title: "Preferências", url: "/app/preferences", icon: Settings },
+  { title: "Inteligência Artificial", url: "/app/settings/ai", icon: KeyRound },
+  { title: "Plano e cobrança", url: "/app/settings/billing", icon: CreditCard },
 ];
 
 export function AppSidebar() {
@@ -80,6 +94,24 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {mainNav.map((item) => (
+                <SidebarMenuItem key={item.url}>
+                  <SidebarMenuButton asChild isActive={isActive(item.url, item.exact)} tooltip={item.title}>
+                    <Link to={item.url} className="flex items-center gap-2">
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Atendimento</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {inboxNav.map((item) => (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton asChild isActive={isActive(item.url, item.exact)} tooltip={item.title}>
                     <Link to={item.url} className="flex items-center gap-2">

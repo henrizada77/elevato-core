@@ -14,6 +14,456 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_assistant_messages: {
+        Row: {
+          company_id: string
+          content: string | null
+          created_at: string
+          id: string
+          parts: Json | null
+          role: string
+          thread_id: string
+          tokens: number | null
+          tool_calls: Json | null
+        }
+        Insert: {
+          company_id: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          parts?: Json | null
+          role: string
+          thread_id: string
+          tokens?: number | null
+          tool_calls?: Json | null
+        }
+        Update: {
+          company_id?: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          parts?: Json | null
+          role?: string
+          thread_id?: string
+          tokens?: number | null
+          tool_calls?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_assistant_messages_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_assistant_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "ai_assistant_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_assistant_threads: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          last_message_at: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_assistant_threads_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_credentials: {
+        Row: {
+          api_key_encrypted: string | null
+          company_id: string
+          created_at: string
+          created_by: string | null
+          default_model: string | null
+          id: string
+          is_active: boolean
+          last_test_at: string | null
+          last_test_status: string | null
+          provider: Database["public"]["Enums"]["ai_provider"]
+          updated_at: string
+        }
+        Insert: {
+          api_key_encrypted?: string | null
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          default_model?: string | null
+          id?: string
+          is_active?: boolean
+          last_test_at?: string | null
+          last_test_status?: string | null
+          provider: Database["public"]["Enums"]["ai_provider"]
+          updated_at?: string
+        }
+        Update: {
+          api_key_encrypted?: string | null
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          default_model?: string | null
+          id?: string
+          is_active?: boolean
+          last_test_at?: string | null
+          last_test_status?: string | null
+          provider?: Database["public"]["Enums"]["ai_provider"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_credentials_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_usage_logs: {
+        Row: {
+          company_id: string
+          cost_estimate: number | null
+          created_at: string
+          error_message: string | null
+          feature: string | null
+          id: string
+          latency_ms: number | null
+          model: string | null
+          provider: Database["public"]["Enums"]["ai_provider"]
+          success: boolean
+          tokens_in: number | null
+          tokens_out: number | null
+          user_id: string | null
+        }
+        Insert: {
+          company_id: string
+          cost_estimate?: number | null
+          created_at?: string
+          error_message?: string | null
+          feature?: string | null
+          id?: string
+          latency_ms?: number | null
+          model?: string | null
+          provider: Database["public"]["Enums"]["ai_provider"]
+          success?: boolean
+          tokens_in?: number | null
+          tokens_out?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          company_id?: string
+          cost_estimate?: number | null
+          created_at?: string
+          error_message?: string | null
+          feature?: string | null
+          id?: string
+          latency_ms?: number | null
+          model?: string | null
+          provider?: Database["public"]["Enums"]["ai_provider"]
+          success?: boolean
+          tokens_in?: number | null
+          tokens_out?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_usage_logs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      billing_invoices: {
+        Row: {
+          amount_cents: number
+          company_id: string
+          created_at: string
+          currency: string
+          due_at: string | null
+          gateway: string | null
+          gateway_invoice_id: string | null
+          id: string
+          metadata: Json
+          paid_at: string | null
+          receipt_url: string | null
+          status: string
+          subscription_id: string | null
+        }
+        Insert: {
+          amount_cents: number
+          company_id: string
+          created_at?: string
+          currency?: string
+          due_at?: string | null
+          gateway?: string | null
+          gateway_invoice_id?: string | null
+          id?: string
+          metadata?: Json
+          paid_at?: string | null
+          receipt_url?: string | null
+          status?: string
+          subscription_id?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          company_id?: string
+          created_at?: string
+          currency?: string
+          due_at?: string | null
+          gateway?: string | null
+          gateway_invoice_id?: string | null
+          id?: string
+          metadata?: Json
+          paid_at?: string | null
+          receipt_url?: string | null
+          status?: string
+          subscription_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_invoices_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "billing_invoices_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "billing_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      billing_modules: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean
+          is_core: boolean
+          name: string
+          position: number
+          slug: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          is_core?: boolean
+          name: string
+          position?: number
+          slug: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          is_core?: boolean
+          name?: string
+          position?: number
+          slug?: string
+        }
+        Relationships: []
+      }
+      billing_plans: {
+        Row: {
+          created_at: string
+          currency: string
+          description: string | null
+          features: Json
+          id: string
+          is_public: boolean
+          max_contacts: number | null
+          max_inboxes: number | null
+          max_users: number | null
+          modules: Json
+          name: string
+          position: number
+          price_cents: number
+          slug: string
+          trial_days: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          features?: Json
+          id?: string
+          is_public?: boolean
+          max_contacts?: number | null
+          max_inboxes?: number | null
+          max_users?: number | null
+          modules?: Json
+          name: string
+          position?: number
+          price_cents?: number
+          slug: string
+          trial_days?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          features?: Json
+          id?: string
+          is_public?: boolean
+          max_contacts?: number | null
+          max_inboxes?: number | null
+          max_users?: number | null
+          modules?: Json
+          name?: string
+          position?: number
+          price_cents?: number
+          slug?: string
+          trial_days?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      billing_subscriptions: {
+        Row: {
+          canceled_at: string | null
+          company_id: string
+          created_at: string
+          current_period_end: string | null
+          current_period_start: string | null
+          gateway: string | null
+          gateway_customer_id: string | null
+          gateway_subscription_id: string | null
+          id: string
+          metadata: Json
+          plan_id: string
+          status: Database["public"]["Enums"]["billing_status"]
+          trial_ends_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          canceled_at?: string | null
+          company_id: string
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          gateway?: string | null
+          gateway_customer_id?: string | null
+          gateway_subscription_id?: string | null
+          id?: string
+          metadata?: Json
+          plan_id: string
+          status?: Database["public"]["Enums"]["billing_status"]
+          trial_ends_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          canceled_at?: string | null
+          company_id?: string
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          gateway?: string | null
+          gateway_customer_id?: string | null
+          gateway_subscription_id?: string | null
+          id?: string
+          metadata?: Json
+          plan_id?: string
+          status?: Database["public"]["Enums"]["billing_status"]
+          trial_ends_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "billing_subscriptions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: true
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "billing_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "billing_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      billing_webhook_events: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          event_type: string | null
+          gateway: string
+          id: string
+          payload: Json
+          processed_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          event_type?: string | null
+          gateway: string
+          id?: string
+          payload: Json
+          processed_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          event_type?: string | null
+          gateway?: string
+          id?: string
+          payload?: Json
+          processed_at?: string | null
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           address: string | null
@@ -112,6 +562,45 @@ export type Database = {
           },
         ]
       }
+      company_modules: {
+        Row: {
+          company_id: string
+          enabled: boolean
+          enabled_at: string | null
+          id: string
+          module_id: string
+        }
+        Insert: {
+          company_id: string
+          enabled?: boolean
+          enabled_at?: string | null
+          id?: string
+          module_id: string
+        }
+        Update: {
+          company_id?: string
+          enabled?: boolean
+          enabled_at?: string | null
+          id?: string
+          module_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_modules_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_modules_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "billing_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_attachments: {
         Row: {
           company_id: string
@@ -152,6 +641,113 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "crm_attachments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_automation_runs: {
+        Row: {
+          automation_id: string
+          company_id: string
+          created_at: string
+          entity_id: string | null
+          entity_kind: string | null
+          error_message: string | null
+          id: string
+          result: Json | null
+          status: string
+        }
+        Insert: {
+          automation_id: string
+          company_id: string
+          created_at?: string
+          entity_id?: string | null
+          entity_kind?: string | null
+          error_message?: string | null
+          id?: string
+          result?: Json | null
+          status?: string
+        }
+        Update: {
+          automation_id?: string
+          company_id?: string
+          created_at?: string
+          entity_id?: string | null
+          entity_kind?: string | null
+          error_message?: string | null
+          id?: string
+          result?: Json | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_automation_runs_automation_id_fkey"
+            columns: ["automation_id"]
+            isOneToOne: false
+            referencedRelation: "crm_automations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_automation_runs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crm_automations: {
+        Row: {
+          actions: Json
+          company_id: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          is_active: boolean
+          last_run_at: string | null
+          name: string
+          run_count: number
+          trigger_config: Json
+          trigger_type: string
+          updated_at: string
+        }
+        Insert: {
+          actions?: Json
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          last_run_at?: string | null
+          name: string
+          run_count?: number
+          trigger_config?: Json
+          trigger_type: string
+          updated_at?: string
+        }
+        Update: {
+          actions?: Json
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          last_run_at?: string | null
+          name?: string
+          run_count?: number
+          trigger_config?: Json
+          trigger_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_automations_company_id_fkey"
             columns: ["company_id"]
             isOneToOne: false
             referencedRelation: "companies"
@@ -1218,6 +1814,471 @@ export type Database = {
           },
         ]
       }
+      inbox_attachments: {
+        Row: {
+          company_id: string
+          conversation_id: string
+          created_at: string
+          file_name: string
+          file_path: string
+          id: string
+          message_id: string | null
+          mime_type: string | null
+          size_bytes: number | null
+          uploaded_by: string | null
+        }
+        Insert: {
+          company_id: string
+          conversation_id: string
+          created_at?: string
+          file_name: string
+          file_path: string
+          id?: string
+          message_id?: string | null
+          mime_type?: string | null
+          size_bytes?: number | null
+          uploaded_by?: string | null
+        }
+        Update: {
+          company_id?: string
+          conversation_id?: string
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          id?: string
+          message_id?: string | null
+          mime_type?: string | null
+          size_bytes?: number | null
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inbox_attachments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inbox_attachments_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "inbox_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inbox_attachments_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "inbox_messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inbox_channels: {
+        Row: {
+          company_id: string
+          config: Json
+          created_at: string
+          id: string
+          is_active: boolean
+          kind: Database["public"]["Enums"]["inbox_channel_kind"]
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          config?: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          kind: Database["public"]["Enums"]["inbox_channel_kind"]
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          config?: Json
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          kind?: Database["public"]["Enums"]["inbox_channel_kind"]
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inbox_channels_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inbox_conversations: {
+        Row: {
+          assignee_id: string | null
+          channel_id: string | null
+          company_id: string
+          contact_avatar: string | null
+          contact_email: string | null
+          contact_name: string
+          contact_phone: string | null
+          created_at: string
+          customer_id: string | null
+          deal_id: string | null
+          external_id: string | null
+          id: string
+          last_message_at: string | null
+          last_message_preview: string | null
+          lead_id: string | null
+          metadata: Json
+          queue_id: string | null
+          status: Database["public"]["Enums"]["inbox_conv_status"]
+          tags: Json
+          unread_count: number
+          updated_at: string
+        }
+        Insert: {
+          assignee_id?: string | null
+          channel_id?: string | null
+          company_id: string
+          contact_avatar?: string | null
+          contact_email?: string | null
+          contact_name: string
+          contact_phone?: string | null
+          created_at?: string
+          customer_id?: string | null
+          deal_id?: string | null
+          external_id?: string | null
+          id?: string
+          last_message_at?: string | null
+          last_message_preview?: string | null
+          lead_id?: string | null
+          metadata?: Json
+          queue_id?: string | null
+          status?: Database["public"]["Enums"]["inbox_conv_status"]
+          tags?: Json
+          unread_count?: number
+          updated_at?: string
+        }
+        Update: {
+          assignee_id?: string | null
+          channel_id?: string | null
+          company_id?: string
+          contact_avatar?: string | null
+          contact_email?: string | null
+          contact_name?: string
+          contact_phone?: string | null
+          created_at?: string
+          customer_id?: string | null
+          deal_id?: string | null
+          external_id?: string | null
+          id?: string
+          last_message_at?: string | null
+          last_message_preview?: string | null
+          lead_id?: string | null
+          metadata?: Json
+          queue_id?: string | null
+          status?: Database["public"]["Enums"]["inbox_conv_status"]
+          tags?: Json
+          unread_count?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inbox_conversations_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "inbox_channels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inbox_conversations_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inbox_conversations_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "crm_customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inbox_conversations_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "crm_deals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inbox_conversations_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "crm_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inbox_conversations_queue_id_fkey"
+            columns: ["queue_id"]
+            isOneToOne: false
+            referencedRelation: "inbox_queues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inbox_events: {
+        Row: {
+          actor_id: string | null
+          company_id: string
+          conversation_id: string
+          created_at: string
+          data: Json | null
+          event_type: string
+          id: string
+          title: string | null
+        }
+        Insert: {
+          actor_id?: string | null
+          company_id: string
+          conversation_id: string
+          created_at?: string
+          data?: Json | null
+          event_type: string
+          id?: string
+          title?: string | null
+        }
+        Update: {
+          actor_id?: string | null
+          company_id?: string
+          conversation_id?: string
+          created_at?: string
+          data?: Json | null
+          event_type?: string
+          id?: string
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inbox_events_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inbox_events_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "inbox_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inbox_messages: {
+        Row: {
+          ack_status: string | null
+          company_id: string
+          content: string | null
+          conversation_id: string
+          created_at: string
+          direction: Database["public"]["Enums"]["inbox_msg_direction"]
+          external_id: string | null
+          id: string
+          is_internal: boolean
+          media_mime: string | null
+          media_size: number | null
+          media_url: string | null
+          metadata: Json
+          msg_type: Database["public"]["Enums"]["inbox_msg_type"]
+          sender_id: string | null
+          sender_name: string | null
+        }
+        Insert: {
+          ack_status?: string | null
+          company_id: string
+          content?: string | null
+          conversation_id: string
+          created_at?: string
+          direction: Database["public"]["Enums"]["inbox_msg_direction"]
+          external_id?: string | null
+          id?: string
+          is_internal?: boolean
+          media_mime?: string | null
+          media_size?: number | null
+          media_url?: string | null
+          metadata?: Json
+          msg_type?: Database["public"]["Enums"]["inbox_msg_type"]
+          sender_id?: string | null
+          sender_name?: string | null
+        }
+        Update: {
+          ack_status?: string | null
+          company_id?: string
+          content?: string | null
+          conversation_id?: string
+          created_at?: string
+          direction?: Database["public"]["Enums"]["inbox_msg_direction"]
+          external_id?: string | null
+          id?: string
+          is_internal?: boolean
+          media_mime?: string | null
+          media_size?: number | null
+          media_url?: string | null
+          metadata?: Json
+          msg_type?: Database["public"]["Enums"]["inbox_msg_type"]
+          sender_id?: string | null
+          sender_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inbox_messages_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inbox_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "inbox_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inbox_notes: {
+        Row: {
+          author_id: string | null
+          company_id: string
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          author_id?: string | null
+          company_id: string
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          author_id?: string | null
+          company_id?: string
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inbox_notes_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inbox_notes_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "inbox_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inbox_participants: {
+        Row: {
+          added_at: string
+          company_id: string
+          conversation_id: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          added_at?: string
+          company_id: string
+          conversation_id: string
+          id?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          added_at?: string
+          company_id?: string
+          conversation_id?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inbox_participants_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inbox_participants_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "inbox_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inbox_queues: {
+        Row: {
+          color: string | null
+          company_id: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          position: number
+          updated_at: string
+        }
+        Insert: {
+          color?: string | null
+          company_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          position?: number
+          updated_at?: string
+        }
+        Update: {
+          color?: string | null
+          company_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          position?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inbox_queues_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -1280,11 +2341,117 @@ export type Database = {
         }
         Relationships: []
       }
+      wa_sessions: {
+        Row: {
+          channel_id: string | null
+          company_id: string
+          created_at: string
+          id: string
+          instance_name: string
+          last_connected_at: string | null
+          metadata: Json
+          phone_number: string | null
+          qr_code: string | null
+          status: string
+          token_encrypted: string | null
+          updated_at: string
+          webhook_url: string | null
+        }
+        Insert: {
+          channel_id?: string | null
+          company_id: string
+          created_at?: string
+          id?: string
+          instance_name: string
+          last_connected_at?: string | null
+          metadata?: Json
+          phone_number?: string | null
+          qr_code?: string | null
+          status?: string
+          token_encrypted?: string | null
+          updated_at?: string
+          webhook_url?: string | null
+        }
+        Update: {
+          channel_id?: string | null
+          company_id?: string
+          created_at?: string
+          id?: string
+          instance_name?: string
+          last_connected_at?: string | null
+          metadata?: Json
+          phone_number?: string | null
+          qr_code?: string | null
+          status?: string
+          token_encrypted?: string | null
+          updated_at?: string
+          webhook_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wa_sessions_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "inbox_channels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wa_sessions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wa_webhook_events: {
+        Row: {
+          created_at: string
+          event_type: string | null
+          id: string
+          payload: Json
+          processed_at: string | null
+          session_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type?: string | null
+          id?: string
+          payload: Json
+          processed_at?: string | null
+          session_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string | null
+          id?: string
+          payload?: Json
+          processed_at?: string | null
+          session_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wa_webhook_events_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "wa_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      ai_decrypt_key: {
+        Args: { _cipher: string; _secret: string }
+        Returns: string
+      }
+      ai_encrypt_key: {
+        Args: { _plain: string; _secret: string }
+        Returns: string
+      }
       create_company_with_owner: {
         Args: { p_email?: string; p_name: string; p_phone?: string }
         Returns: string
@@ -1319,7 +2486,9 @@ export type Database = {
       }
     }
     Enums: {
+      ai_provider: "openai" | "gemini" | "anthropic" | "lovable"
       app_role: "master" | "admin" | "manager" | "seller" | "agent" | "user"
+      billing_status: "trial" | "active" | "past_due" | "canceled" | "expired"
       company_plan: "trial" | "starter" | "pro" | "enterprise"
       company_status:
         | "trial"
@@ -1343,6 +2512,32 @@ export type Database = {
       crm_entity_kind: "lead" | "customer" | "company" | "contact" | "deal"
       crm_lead_status: "new" | "working" | "converted" | "archived" | "lost"
       crm_stage_kind: "initial" | "open" | "won" | "lost"
+      inbox_channel_kind:
+        | "whatsapp"
+        | "email"
+        | "webchat"
+        | "instagram"
+        | "facebook"
+        | "sms"
+        | "api"
+      inbox_conv_status:
+        | "open"
+        | "pending"
+        | "assigned"
+        | "resolved"
+        | "archived"
+      inbox_msg_direction: "inbound" | "outbound" | "internal"
+      inbox_msg_type:
+        | "text"
+        | "image"
+        | "audio"
+        | "video"
+        | "file"
+        | "pdf"
+        | "location"
+        | "contact"
+        | "sticker"
+        | "system"
       member_status: "active" | "invited" | "suspended"
     }
     CompositeTypes: {
@@ -1471,7 +2666,9 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      ai_provider: ["openai", "gemini", "anthropic", "lovable"],
       app_role: ["master", "admin", "manager", "seller", "agent", "user"],
+      billing_status: ["trial", "active", "past_due", "canceled", "expired"],
       company_plan: ["trial", "starter", "pro", "enterprise"],
       company_status: [
         "trial",
@@ -1497,6 +2694,35 @@ export const Constants = {
       crm_entity_kind: ["lead", "customer", "company", "contact", "deal"],
       crm_lead_status: ["new", "working", "converted", "archived", "lost"],
       crm_stage_kind: ["initial", "open", "won", "lost"],
+      inbox_channel_kind: [
+        "whatsapp",
+        "email",
+        "webchat",
+        "instagram",
+        "facebook",
+        "sms",
+        "api",
+      ],
+      inbox_conv_status: [
+        "open",
+        "pending",
+        "assigned",
+        "resolved",
+        "archived",
+      ],
+      inbox_msg_direction: ["inbound", "outbound", "internal"],
+      inbox_msg_type: [
+        "text",
+        "image",
+        "audio",
+        "video",
+        "file",
+        "pdf",
+        "location",
+        "contact",
+        "sticker",
+        "system",
+      ],
       member_status: ["active", "invited", "suspended"],
     },
   },

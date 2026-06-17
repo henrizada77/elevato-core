@@ -13,14 +13,23 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedAppRouteRouteImport } from './routes/_authenticated/app/route'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app/index'
+import { Route as ApiPublicWaWebhookRouteImport } from './routes/api/public/wa-webhook'
+import { Route as ApiPublicBillingWebhookRouteImport } from './routes/api/public/billing-webhook'
 import { Route as AuthenticatedAppUsersRouteImport } from './routes/_authenticated/app/users'
 import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app/settings'
 import { Route as AuthenticatedAppPreferencesRouteImport } from './routes/_authenticated/app/preferences'
 import { Route as AuthenticatedAppMasterRouteImport } from './routes/_authenticated/app/master'
+import { Route as AuthenticatedAppMarketplaceRouteImport } from './routes/_authenticated/app/marketplace'
+import { Route as AuthenticatedAppAssistantRouteImport } from './routes/_authenticated/app/assistant'
+import { Route as AuthenticatedAppInboxIndexRouteImport } from './routes/_authenticated/app/inbox/index'
 import { Route as AuthenticatedAppCrmIndexRouteImport } from './routes/_authenticated/app/crm/index'
+import { Route as AuthenticatedAppSettingsBillingRouteImport } from './routes/_authenticated/app/settings/billing'
+import { Route as AuthenticatedAppSettingsAiRouteImport } from './routes/_authenticated/app/settings/ai'
+import { Route as AuthenticatedAppInboxQueuesRouteImport } from './routes/_authenticated/app/inbox/queues'
 import { Route as AuthenticatedAppCrmTagsRouteImport } from './routes/_authenticated/app/crm/tags'
 import { Route as AuthenticatedAppCrmSettingsRouteImport } from './routes/_authenticated/app/crm/settings'
 import { Route as AuthenticatedAppCrmLeadsRouteImport } from './routes/_authenticated/app/crm/leads'
@@ -50,6 +59,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
@@ -64,6 +78,16 @@ const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const ApiPublicWaWebhookRoute = ApiPublicWaWebhookRouteImport.update({
+  id: '/api/public/wa-webhook',
+  path: '/api/public/wa-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicBillingWebhookRoute = ApiPublicBillingWebhookRouteImport.update({
+  id: '/api/public/billing-webhook',
+  path: '/api/public/billing-webhook',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAppUsersRoute = AuthenticatedAppUsersRouteImport.update({
   id: '/users',
@@ -87,10 +111,46 @@ const AuthenticatedAppMasterRoute = AuthenticatedAppMasterRouteImport.update({
   path: '/master',
   getParentRoute: () => AuthenticatedAppRouteRoute,
 } as any)
+const AuthenticatedAppMarketplaceRoute =
+  AuthenticatedAppMarketplaceRouteImport.update({
+    id: '/marketplace',
+    path: '/marketplace',
+    getParentRoute: () => AuthenticatedAppRouteRoute,
+  } as any)
+const AuthenticatedAppAssistantRoute =
+  AuthenticatedAppAssistantRouteImport.update({
+    id: '/assistant',
+    path: '/assistant',
+    getParentRoute: () => AuthenticatedAppRouteRoute,
+  } as any)
+const AuthenticatedAppInboxIndexRoute =
+  AuthenticatedAppInboxIndexRouteImport.update({
+    id: '/inbox/',
+    path: '/inbox/',
+    getParentRoute: () => AuthenticatedAppRouteRoute,
+  } as any)
 const AuthenticatedAppCrmIndexRoute =
   AuthenticatedAppCrmIndexRouteImport.update({
     id: '/crm/',
     path: '/crm/',
+    getParentRoute: () => AuthenticatedAppRouteRoute,
+  } as any)
+const AuthenticatedAppSettingsBillingRoute =
+  AuthenticatedAppSettingsBillingRouteImport.update({
+    id: '/billing',
+    path: '/billing',
+    getParentRoute: () => AuthenticatedAppSettingsRoute,
+  } as any)
+const AuthenticatedAppSettingsAiRoute =
+  AuthenticatedAppSettingsAiRouteImport.update({
+    id: '/ai',
+    path: '/ai',
+    getParentRoute: () => AuthenticatedAppSettingsRoute,
+  } as any)
+const AuthenticatedAppInboxQueuesRoute =
+  AuthenticatedAppInboxQueuesRouteImport.update({
+    id: '/inbox/queues',
+    path: '/inbox/queues',
     getParentRoute: () => AuthenticatedAppRouteRoute,
   } as any)
 const AuthenticatedAppCrmTagsRoute = AuthenticatedAppCrmTagsRouteImport.update({
@@ -153,10 +213,15 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/app': typeof AuthenticatedAppRouteRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/api/chat': typeof ApiChatRoute
+  '/app/assistant': typeof AuthenticatedAppAssistantRoute
+  '/app/marketplace': typeof AuthenticatedAppMarketplaceRoute
   '/app/master': typeof AuthenticatedAppMasterRoute
   '/app/preferences': typeof AuthenticatedAppPreferencesRoute
-  '/app/settings': typeof AuthenticatedAppSettingsRoute
+  '/app/settings': typeof AuthenticatedAppSettingsRouteWithChildren
   '/app/users': typeof AuthenticatedAppUsersRoute
+  '/api/public/billing-webhook': typeof ApiPublicBillingWebhookRoute
+  '/api/public/wa-webhook': typeof ApiPublicWaWebhookRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/crm/automations': typeof AuthenticatedAppCrmAutomationsRoute
   '/app/crm/companies': typeof AuthenticatedAppCrmCompaniesRoute
@@ -165,7 +230,11 @@ export interface FileRoutesByFullPath {
   '/app/crm/leads': typeof AuthenticatedAppCrmLeadsRoute
   '/app/crm/settings': typeof AuthenticatedAppCrmSettingsRoute
   '/app/crm/tags': typeof AuthenticatedAppCrmTagsRoute
+  '/app/inbox/queues': typeof AuthenticatedAppInboxQueuesRoute
+  '/app/settings/ai': typeof AuthenticatedAppSettingsAiRoute
+  '/app/settings/billing': typeof AuthenticatedAppSettingsBillingRoute
   '/app/crm/': typeof AuthenticatedAppCrmIndexRoute
+  '/app/inbox/': typeof AuthenticatedAppInboxIndexRoute
   '/app/crm/pipelines/$pipelineId': typeof AuthenticatedAppCrmPipelinesPipelineIdRoute
   '/app/crm/pipelines/': typeof AuthenticatedAppCrmPipelinesIndexRoute
 }
@@ -174,10 +243,15 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/api/chat': typeof ApiChatRoute
+  '/app/assistant': typeof AuthenticatedAppAssistantRoute
+  '/app/marketplace': typeof AuthenticatedAppMarketplaceRoute
   '/app/master': typeof AuthenticatedAppMasterRoute
   '/app/preferences': typeof AuthenticatedAppPreferencesRoute
-  '/app/settings': typeof AuthenticatedAppSettingsRoute
+  '/app/settings': typeof AuthenticatedAppSettingsRouteWithChildren
   '/app/users': typeof AuthenticatedAppUsersRoute
+  '/api/public/billing-webhook': typeof ApiPublicBillingWebhookRoute
+  '/api/public/wa-webhook': typeof ApiPublicWaWebhookRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/crm/automations': typeof AuthenticatedAppCrmAutomationsRoute
   '/app/crm/companies': typeof AuthenticatedAppCrmCompaniesRoute
@@ -186,7 +260,11 @@ export interface FileRoutesByTo {
   '/app/crm/leads': typeof AuthenticatedAppCrmLeadsRoute
   '/app/crm/settings': typeof AuthenticatedAppCrmSettingsRoute
   '/app/crm/tags': typeof AuthenticatedAppCrmTagsRoute
+  '/app/inbox/queues': typeof AuthenticatedAppInboxQueuesRoute
+  '/app/settings/ai': typeof AuthenticatedAppSettingsAiRoute
+  '/app/settings/billing': typeof AuthenticatedAppSettingsBillingRoute
   '/app/crm': typeof AuthenticatedAppCrmIndexRoute
+  '/app/inbox': typeof AuthenticatedAppInboxIndexRoute
   '/app/crm/pipelines/$pipelineId': typeof AuthenticatedAppCrmPipelinesPipelineIdRoute
   '/app/crm/pipelines': typeof AuthenticatedAppCrmPipelinesIndexRoute
 }
@@ -198,10 +276,15 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/api/chat': typeof ApiChatRoute
+  '/_authenticated/app/assistant': typeof AuthenticatedAppAssistantRoute
+  '/_authenticated/app/marketplace': typeof AuthenticatedAppMarketplaceRoute
   '/_authenticated/app/master': typeof AuthenticatedAppMasterRoute
   '/_authenticated/app/preferences': typeof AuthenticatedAppPreferencesRoute
-  '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRoute
+  '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRouteWithChildren
   '/_authenticated/app/users': typeof AuthenticatedAppUsersRoute
+  '/api/public/billing-webhook': typeof ApiPublicBillingWebhookRoute
+  '/api/public/wa-webhook': typeof ApiPublicWaWebhookRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/crm/automations': typeof AuthenticatedAppCrmAutomationsRoute
   '/_authenticated/app/crm/companies': typeof AuthenticatedAppCrmCompaniesRoute
@@ -210,7 +293,11 @@ export interface FileRoutesById {
   '/_authenticated/app/crm/leads': typeof AuthenticatedAppCrmLeadsRoute
   '/_authenticated/app/crm/settings': typeof AuthenticatedAppCrmSettingsRoute
   '/_authenticated/app/crm/tags': typeof AuthenticatedAppCrmTagsRoute
+  '/_authenticated/app/inbox/queues': typeof AuthenticatedAppInboxQueuesRoute
+  '/_authenticated/app/settings/ai': typeof AuthenticatedAppSettingsAiRoute
+  '/_authenticated/app/settings/billing': typeof AuthenticatedAppSettingsBillingRoute
   '/_authenticated/app/crm/': typeof AuthenticatedAppCrmIndexRoute
+  '/_authenticated/app/inbox/': typeof AuthenticatedAppInboxIndexRoute
   '/_authenticated/app/crm/pipelines/$pipelineId': typeof AuthenticatedAppCrmPipelinesPipelineIdRoute
   '/_authenticated/app/crm/pipelines/': typeof AuthenticatedAppCrmPipelinesIndexRoute
 }
@@ -222,10 +309,15 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/app'
     | '/onboarding'
+    | '/api/chat'
+    | '/app/assistant'
+    | '/app/marketplace'
     | '/app/master'
     | '/app/preferences'
     | '/app/settings'
     | '/app/users'
+    | '/api/public/billing-webhook'
+    | '/api/public/wa-webhook'
     | '/app/'
     | '/app/crm/automations'
     | '/app/crm/companies'
@@ -234,7 +326,11 @@ export interface FileRouteTypes {
     | '/app/crm/leads'
     | '/app/crm/settings'
     | '/app/crm/tags'
+    | '/app/inbox/queues'
+    | '/app/settings/ai'
+    | '/app/settings/billing'
     | '/app/crm/'
+    | '/app/inbox/'
     | '/app/crm/pipelines/$pipelineId'
     | '/app/crm/pipelines/'
   fileRoutesByTo: FileRoutesByTo
@@ -243,10 +339,15 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/onboarding'
+    | '/api/chat'
+    | '/app/assistant'
+    | '/app/marketplace'
     | '/app/master'
     | '/app/preferences'
     | '/app/settings'
     | '/app/users'
+    | '/api/public/billing-webhook'
+    | '/api/public/wa-webhook'
     | '/app'
     | '/app/crm/automations'
     | '/app/crm/companies'
@@ -255,7 +356,11 @@ export interface FileRouteTypes {
     | '/app/crm/leads'
     | '/app/crm/settings'
     | '/app/crm/tags'
+    | '/app/inbox/queues'
+    | '/app/settings/ai'
+    | '/app/settings/billing'
     | '/app/crm'
+    | '/app/inbox'
     | '/app/crm/pipelines/$pipelineId'
     | '/app/crm/pipelines'
   id:
@@ -266,10 +371,15 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/app'
     | '/_authenticated/onboarding'
+    | '/api/chat'
+    | '/_authenticated/app/assistant'
+    | '/_authenticated/app/marketplace'
     | '/_authenticated/app/master'
     | '/_authenticated/app/preferences'
     | '/_authenticated/app/settings'
     | '/_authenticated/app/users'
+    | '/api/public/billing-webhook'
+    | '/api/public/wa-webhook'
     | '/_authenticated/app/'
     | '/_authenticated/app/crm/automations'
     | '/_authenticated/app/crm/companies'
@@ -278,7 +388,11 @@ export interface FileRouteTypes {
     | '/_authenticated/app/crm/leads'
     | '/_authenticated/app/crm/settings'
     | '/_authenticated/app/crm/tags'
+    | '/_authenticated/app/inbox/queues'
+    | '/_authenticated/app/settings/ai'
+    | '/_authenticated/app/settings/billing'
     | '/_authenticated/app/crm/'
+    | '/_authenticated/app/inbox/'
     | '/_authenticated/app/crm/pipelines/$pipelineId'
     | '/_authenticated/app/crm/pipelines/'
   fileRoutesById: FileRoutesById
@@ -288,6 +402,9 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiChatRoute: typeof ApiChatRoute
+  ApiPublicBillingWebhookRoute: typeof ApiPublicBillingWebhookRoute
+  ApiPublicWaWebhookRoute: typeof ApiPublicWaWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -320,6 +437,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/onboarding': {
       id: '/_authenticated/onboarding'
       path: '/onboarding'
@@ -340,6 +464,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
       parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/api/public/wa-webhook': {
+      id: '/api/public/wa-webhook'
+      path: '/api/public/wa-webhook'
+      fullPath: '/api/public/wa-webhook'
+      preLoaderRoute: typeof ApiPublicWaWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/billing-webhook': {
+      id: '/api/public/billing-webhook'
+      path: '/api/public/billing-webhook'
+      fullPath: '/api/public/billing-webhook'
+      preLoaderRoute: typeof ApiPublicBillingWebhookRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/app/users': {
       id: '/_authenticated/app/users'
@@ -369,11 +507,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppMasterRouteImport
       parentRoute: typeof AuthenticatedAppRouteRoute
     }
+    '/_authenticated/app/marketplace': {
+      id: '/_authenticated/app/marketplace'
+      path: '/marketplace'
+      fullPath: '/app/marketplace'
+      preLoaderRoute: typeof AuthenticatedAppMarketplaceRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/app/assistant': {
+      id: '/_authenticated/app/assistant'
+      path: '/assistant'
+      fullPath: '/app/assistant'
+      preLoaderRoute: typeof AuthenticatedAppAssistantRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/app/inbox/': {
+      id: '/_authenticated/app/inbox/'
+      path: '/inbox'
+      fullPath: '/app/inbox/'
+      preLoaderRoute: typeof AuthenticatedAppInboxIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
     '/_authenticated/app/crm/': {
       id: '/_authenticated/app/crm/'
       path: '/crm'
       fullPath: '/app/crm/'
       preLoaderRoute: typeof AuthenticatedAppCrmIndexRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/app/settings/billing': {
+      id: '/_authenticated/app/settings/billing'
+      path: '/billing'
+      fullPath: '/app/settings/billing'
+      preLoaderRoute: typeof AuthenticatedAppSettingsBillingRouteImport
+      parentRoute: typeof AuthenticatedAppSettingsRoute
+    }
+    '/_authenticated/app/settings/ai': {
+      id: '/_authenticated/app/settings/ai'
+      path: '/ai'
+      fullPath: '/app/settings/ai'
+      preLoaderRoute: typeof AuthenticatedAppSettingsAiRouteImport
+      parentRoute: typeof AuthenticatedAppSettingsRoute
+    }
+    '/_authenticated/app/inbox/queues': {
+      id: '/_authenticated/app/inbox/queues'
+      path: '/inbox/queues'
+      fullPath: '/app/inbox/queues'
+      preLoaderRoute: typeof AuthenticatedAppInboxQueuesRouteImport
       parentRoute: typeof AuthenticatedAppRouteRoute
     }
     '/_authenticated/app/crm/tags': {
@@ -442,10 +622,28 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAppSettingsRouteChildren {
+  AuthenticatedAppSettingsAiRoute: typeof AuthenticatedAppSettingsAiRoute
+  AuthenticatedAppSettingsBillingRoute: typeof AuthenticatedAppSettingsBillingRoute
+}
+
+const AuthenticatedAppSettingsRouteChildren: AuthenticatedAppSettingsRouteChildren =
+  {
+    AuthenticatedAppSettingsAiRoute: AuthenticatedAppSettingsAiRoute,
+    AuthenticatedAppSettingsBillingRoute: AuthenticatedAppSettingsBillingRoute,
+  }
+
+const AuthenticatedAppSettingsRouteWithChildren =
+  AuthenticatedAppSettingsRoute._addFileChildren(
+    AuthenticatedAppSettingsRouteChildren,
+  )
+
 interface AuthenticatedAppRouteRouteChildren {
+  AuthenticatedAppAssistantRoute: typeof AuthenticatedAppAssistantRoute
+  AuthenticatedAppMarketplaceRoute: typeof AuthenticatedAppMarketplaceRoute
   AuthenticatedAppMasterRoute: typeof AuthenticatedAppMasterRoute
   AuthenticatedAppPreferencesRoute: typeof AuthenticatedAppPreferencesRoute
-  AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
+  AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRouteWithChildren
   AuthenticatedAppUsersRoute: typeof AuthenticatedAppUsersRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
   AuthenticatedAppCrmAutomationsRoute: typeof AuthenticatedAppCrmAutomationsRoute
@@ -455,15 +653,19 @@ interface AuthenticatedAppRouteRouteChildren {
   AuthenticatedAppCrmLeadsRoute: typeof AuthenticatedAppCrmLeadsRoute
   AuthenticatedAppCrmSettingsRoute: typeof AuthenticatedAppCrmSettingsRoute
   AuthenticatedAppCrmTagsRoute: typeof AuthenticatedAppCrmTagsRoute
+  AuthenticatedAppInboxQueuesRoute: typeof AuthenticatedAppInboxQueuesRoute
   AuthenticatedAppCrmIndexRoute: typeof AuthenticatedAppCrmIndexRoute
+  AuthenticatedAppInboxIndexRoute: typeof AuthenticatedAppInboxIndexRoute
   AuthenticatedAppCrmPipelinesPipelineIdRoute: typeof AuthenticatedAppCrmPipelinesPipelineIdRoute
   AuthenticatedAppCrmPipelinesIndexRoute: typeof AuthenticatedAppCrmPipelinesIndexRoute
 }
 
 const AuthenticatedAppRouteRouteChildren: AuthenticatedAppRouteRouteChildren = {
+  AuthenticatedAppAssistantRoute: AuthenticatedAppAssistantRoute,
+  AuthenticatedAppMarketplaceRoute: AuthenticatedAppMarketplaceRoute,
   AuthenticatedAppMasterRoute: AuthenticatedAppMasterRoute,
   AuthenticatedAppPreferencesRoute: AuthenticatedAppPreferencesRoute,
-  AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRoute,
+  AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRouteWithChildren,
   AuthenticatedAppUsersRoute: AuthenticatedAppUsersRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
   AuthenticatedAppCrmAutomationsRoute: AuthenticatedAppCrmAutomationsRoute,
@@ -473,7 +675,9 @@ const AuthenticatedAppRouteRouteChildren: AuthenticatedAppRouteRouteChildren = {
   AuthenticatedAppCrmLeadsRoute: AuthenticatedAppCrmLeadsRoute,
   AuthenticatedAppCrmSettingsRoute: AuthenticatedAppCrmSettingsRoute,
   AuthenticatedAppCrmTagsRoute: AuthenticatedAppCrmTagsRoute,
+  AuthenticatedAppInboxQueuesRoute: AuthenticatedAppInboxQueuesRoute,
   AuthenticatedAppCrmIndexRoute: AuthenticatedAppCrmIndexRoute,
+  AuthenticatedAppInboxIndexRoute: AuthenticatedAppInboxIndexRoute,
   AuthenticatedAppCrmPipelinesPipelineIdRoute:
     AuthenticatedAppCrmPipelinesPipelineIdRoute,
   AuthenticatedAppCrmPipelinesIndexRoute:
@@ -503,6 +707,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ApiChatRoute: ApiChatRoute,
+  ApiPublicBillingWebhookRoute: ApiPublicBillingWebhookRoute,
+  ApiPublicWaWebhookRoute: ApiPublicWaWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
