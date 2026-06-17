@@ -13,9 +13,12 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedAppRouteRouteImport } from './routes/_authenticated/app/route'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app/index'
+import { Route as ApiPublicWaWebhookRouteImport } from './routes/api/public/wa-webhook'
+import { Route as ApiPublicBillingWebhookRouteImport } from './routes/api/public/billing-webhook'
 import { Route as AuthenticatedAppUsersRouteImport } from './routes/_authenticated/app/users'
 import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app/settings'
 import { Route as AuthenticatedAppPreferencesRouteImport } from './routes/_authenticated/app/preferences'
@@ -50,6 +53,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
@@ -64,6 +72,16 @@ const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const ApiPublicWaWebhookRoute = ApiPublicWaWebhookRouteImport.update({
+  id: '/api/public/wa-webhook',
+  path: '/api/public/wa-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicBillingWebhookRoute = ApiPublicBillingWebhookRouteImport.update({
+  id: '/api/public/billing-webhook',
+  path: '/api/public/billing-webhook',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAppUsersRoute = AuthenticatedAppUsersRouteImport.update({
   id: '/users',
@@ -153,10 +171,13 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/app': typeof AuthenticatedAppRouteRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/api/chat': typeof ApiChatRoute
   '/app/master': typeof AuthenticatedAppMasterRoute
   '/app/preferences': typeof AuthenticatedAppPreferencesRoute
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/users': typeof AuthenticatedAppUsersRoute
+  '/api/public/billing-webhook': typeof ApiPublicBillingWebhookRoute
+  '/api/public/wa-webhook': typeof ApiPublicWaWebhookRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/crm/automations': typeof AuthenticatedAppCrmAutomationsRoute
   '/app/crm/companies': typeof AuthenticatedAppCrmCompaniesRoute
@@ -174,10 +195,13 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/api/chat': typeof ApiChatRoute
   '/app/master': typeof AuthenticatedAppMasterRoute
   '/app/preferences': typeof AuthenticatedAppPreferencesRoute
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/users': typeof AuthenticatedAppUsersRoute
+  '/api/public/billing-webhook': typeof ApiPublicBillingWebhookRoute
+  '/api/public/wa-webhook': typeof ApiPublicWaWebhookRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/crm/automations': typeof AuthenticatedAppCrmAutomationsRoute
   '/app/crm/companies': typeof AuthenticatedAppCrmCompaniesRoute
@@ -198,10 +222,13 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/api/chat': typeof ApiChatRoute
   '/_authenticated/app/master': typeof AuthenticatedAppMasterRoute
   '/_authenticated/app/preferences': typeof AuthenticatedAppPreferencesRoute
   '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRoute
   '/_authenticated/app/users': typeof AuthenticatedAppUsersRoute
+  '/api/public/billing-webhook': typeof ApiPublicBillingWebhookRoute
+  '/api/public/wa-webhook': typeof ApiPublicWaWebhookRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/crm/automations': typeof AuthenticatedAppCrmAutomationsRoute
   '/_authenticated/app/crm/companies': typeof AuthenticatedAppCrmCompaniesRoute
@@ -222,10 +249,13 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/app'
     | '/onboarding'
+    | '/api/chat'
     | '/app/master'
     | '/app/preferences'
     | '/app/settings'
     | '/app/users'
+    | '/api/public/billing-webhook'
+    | '/api/public/wa-webhook'
     | '/app/'
     | '/app/crm/automations'
     | '/app/crm/companies'
@@ -243,10 +273,13 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/onboarding'
+    | '/api/chat'
     | '/app/master'
     | '/app/preferences'
     | '/app/settings'
     | '/app/users'
+    | '/api/public/billing-webhook'
+    | '/api/public/wa-webhook'
     | '/app'
     | '/app/crm/automations'
     | '/app/crm/companies'
@@ -266,10 +299,13 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/app'
     | '/_authenticated/onboarding'
+    | '/api/chat'
     | '/_authenticated/app/master'
     | '/_authenticated/app/preferences'
     | '/_authenticated/app/settings'
     | '/_authenticated/app/users'
+    | '/api/public/billing-webhook'
+    | '/api/public/wa-webhook'
     | '/_authenticated/app/'
     | '/_authenticated/app/crm/automations'
     | '/_authenticated/app/crm/companies'
@@ -288,6 +324,9 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ApiChatRoute: typeof ApiChatRoute
+  ApiPublicBillingWebhookRoute: typeof ApiPublicBillingWebhookRoute
+  ApiPublicWaWebhookRoute: typeof ApiPublicWaWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -320,6 +359,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/onboarding': {
       id: '/_authenticated/onboarding'
       path: '/onboarding'
@@ -340,6 +386,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
       parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/api/public/wa-webhook': {
+      id: '/api/public/wa-webhook'
+      path: '/api/public/wa-webhook'
+      fullPath: '/api/public/wa-webhook'
+      preLoaderRoute: typeof ApiPublicWaWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/billing-webhook': {
+      id: '/api/public/billing-webhook'
+      path: '/api/public/billing-webhook'
+      fullPath: '/api/public/billing-webhook'
+      preLoaderRoute: typeof ApiPublicBillingWebhookRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/app/users': {
       id: '/_authenticated/app/users'
@@ -503,6 +563,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ApiChatRoute: ApiChatRoute,
+  ApiPublicBillingWebhookRoute: ApiPublicBillingWebhookRoute,
+  ApiPublicWaWebhookRoute: ApiPublicWaWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -175,7 +175,7 @@ export const Route = createFileRoute("/api/chat")({
 Sempre responda em português brasileiro, de forma direta e executiva.
 Use as tools disponíveis para consultar dados reais antes de responder. Nunca invente números.
 Quando apresentar listas, use markdown com tabelas ou bullets.`,
-          messages: convertToModelMessages(messages),
+          messages: await convertToModelMessages(messages),
           tools,
           stopWhen: stepCountIs(50),
           onFinish: async ({ text }) => {
