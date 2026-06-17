@@ -22,6 +22,7 @@ import { Route as AuthenticatedAppPreferencesRouteImport } from './routes/_authe
 import { Route as AuthenticatedAppMasterRouteImport } from './routes/_authenticated/app/master'
 import { Route as AuthenticatedAppCrmIndexRouteImport } from './routes/_authenticated/app/crm/index'
 import { Route as AuthenticatedAppCrmTagsRouteImport } from './routes/_authenticated/app/crm/tags'
+import { Route as AuthenticatedAppCrmSettingsRouteImport } from './routes/_authenticated/app/crm/settings'
 import { Route as AuthenticatedAppCrmLeadsRouteImport } from './routes/_authenticated/app/crm/leads'
 import { Route as AuthenticatedAppCrmCustomersRouteImport } from './routes/_authenticated/app/crm/customers'
 import { Route as AuthenticatedAppCrmContactsRouteImport } from './routes/_authenticated/app/crm/contacts'
@@ -97,6 +98,12 @@ const AuthenticatedAppCrmTagsRoute = AuthenticatedAppCrmTagsRouteImport.update({
   path: '/crm/tags',
   getParentRoute: () => AuthenticatedAppRouteRoute,
 } as any)
+const AuthenticatedAppCrmSettingsRoute =
+  AuthenticatedAppCrmSettingsRouteImport.update({
+    id: '/crm/settings',
+    path: '/crm/settings',
+    getParentRoute: () => AuthenticatedAppRouteRoute,
+  } as any)
 const AuthenticatedAppCrmLeadsRoute =
   AuthenticatedAppCrmLeadsRouteImport.update({
     id: '/crm/leads',
@@ -156,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/app/crm/contacts': typeof AuthenticatedAppCrmContactsRoute
   '/app/crm/customers': typeof AuthenticatedAppCrmCustomersRoute
   '/app/crm/leads': typeof AuthenticatedAppCrmLeadsRoute
+  '/app/crm/settings': typeof AuthenticatedAppCrmSettingsRoute
   '/app/crm/tags': typeof AuthenticatedAppCrmTagsRoute
   '/app/crm/': typeof AuthenticatedAppCrmIndexRoute
   '/app/crm/pipelines/$pipelineId': typeof AuthenticatedAppCrmPipelinesPipelineIdRoute
@@ -176,6 +184,7 @@ export interface FileRoutesByTo {
   '/app/crm/contacts': typeof AuthenticatedAppCrmContactsRoute
   '/app/crm/customers': typeof AuthenticatedAppCrmCustomersRoute
   '/app/crm/leads': typeof AuthenticatedAppCrmLeadsRoute
+  '/app/crm/settings': typeof AuthenticatedAppCrmSettingsRoute
   '/app/crm/tags': typeof AuthenticatedAppCrmTagsRoute
   '/app/crm': typeof AuthenticatedAppCrmIndexRoute
   '/app/crm/pipelines/$pipelineId': typeof AuthenticatedAppCrmPipelinesPipelineIdRoute
@@ -199,6 +208,7 @@ export interface FileRoutesById {
   '/_authenticated/app/crm/contacts': typeof AuthenticatedAppCrmContactsRoute
   '/_authenticated/app/crm/customers': typeof AuthenticatedAppCrmCustomersRoute
   '/_authenticated/app/crm/leads': typeof AuthenticatedAppCrmLeadsRoute
+  '/_authenticated/app/crm/settings': typeof AuthenticatedAppCrmSettingsRoute
   '/_authenticated/app/crm/tags': typeof AuthenticatedAppCrmTagsRoute
   '/_authenticated/app/crm/': typeof AuthenticatedAppCrmIndexRoute
   '/_authenticated/app/crm/pipelines/$pipelineId': typeof AuthenticatedAppCrmPipelinesPipelineIdRoute
@@ -222,6 +232,7 @@ export interface FileRouteTypes {
     | '/app/crm/contacts'
     | '/app/crm/customers'
     | '/app/crm/leads'
+    | '/app/crm/settings'
     | '/app/crm/tags'
     | '/app/crm/'
     | '/app/crm/pipelines/$pipelineId'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/app/crm/contacts'
     | '/app/crm/customers'
     | '/app/crm/leads'
+    | '/app/crm/settings'
     | '/app/crm/tags'
     | '/app/crm'
     | '/app/crm/pipelines/$pipelineId'
@@ -264,6 +276,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/crm/contacts'
     | '/_authenticated/app/crm/customers'
     | '/_authenticated/app/crm/leads'
+    | '/_authenticated/app/crm/settings'
     | '/_authenticated/app/crm/tags'
     | '/_authenticated/app/crm/'
     | '/_authenticated/app/crm/pipelines/$pipelineId'
@@ -370,6 +383,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppCrmTagsRouteImport
       parentRoute: typeof AuthenticatedAppRouteRoute
     }
+    '/_authenticated/app/crm/settings': {
+      id: '/_authenticated/app/crm/settings'
+      path: '/crm/settings'
+      fullPath: '/app/crm/settings'
+      preLoaderRoute: typeof AuthenticatedAppCrmSettingsRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
     '/_authenticated/app/crm/leads': {
       id: '/_authenticated/app/crm/leads'
       path: '/crm/leads'
@@ -433,6 +453,7 @@ interface AuthenticatedAppRouteRouteChildren {
   AuthenticatedAppCrmContactsRoute: typeof AuthenticatedAppCrmContactsRoute
   AuthenticatedAppCrmCustomersRoute: typeof AuthenticatedAppCrmCustomersRoute
   AuthenticatedAppCrmLeadsRoute: typeof AuthenticatedAppCrmLeadsRoute
+  AuthenticatedAppCrmSettingsRoute: typeof AuthenticatedAppCrmSettingsRoute
   AuthenticatedAppCrmTagsRoute: typeof AuthenticatedAppCrmTagsRoute
   AuthenticatedAppCrmIndexRoute: typeof AuthenticatedAppCrmIndexRoute
   AuthenticatedAppCrmPipelinesPipelineIdRoute: typeof AuthenticatedAppCrmPipelinesPipelineIdRoute
@@ -450,6 +471,7 @@ const AuthenticatedAppRouteRouteChildren: AuthenticatedAppRouteRouteChildren = {
   AuthenticatedAppCrmContactsRoute: AuthenticatedAppCrmContactsRoute,
   AuthenticatedAppCrmCustomersRoute: AuthenticatedAppCrmCustomersRoute,
   AuthenticatedAppCrmLeadsRoute: AuthenticatedAppCrmLeadsRoute,
+  AuthenticatedAppCrmSettingsRoute: AuthenticatedAppCrmSettingsRoute,
   AuthenticatedAppCrmTagsRoute: AuthenticatedAppCrmTagsRoute,
   AuthenticatedAppCrmIndexRoute: AuthenticatedAppCrmIndexRoute,
   AuthenticatedAppCrmPipelinesPipelineIdRoute:
