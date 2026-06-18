@@ -3158,11 +3158,30 @@ export type Database = {
         Args: { _lead_id: string }
         Returns: string
       }
+      crm_dispatch_automations: {
+        Args: {
+          _company_id: string
+          _entity_id: string
+          _entity_kind: string
+          _payload?: Json
+          _trigger: string
+        }
+        Returns: undefined
+      }
       crm_move_deal: {
         Args: { _deal_id: string; _position?: number; _stage_id: string }
         Returns: undefined
       }
       crm_next_deal_number: { Args: { _company_id: string }; Returns: string }
+      crm_run_automation: {
+        Args: {
+          _entity_id: string
+          _entity_kind: string
+          _payload?: Json
+          _rule_id: string
+        }
+        Returns: undefined
+      }
       get_company_role: {
         Args: { _company_id: string; _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
