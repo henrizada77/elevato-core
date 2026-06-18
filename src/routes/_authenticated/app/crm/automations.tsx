@@ -165,3 +165,50 @@ function AutomationsPage() {
     </div>
   );
 }
+
+function RunsList({ companyId }: { companyId: string | null }) {
+  const { data: runs = [] } = useQuery({
+    queryKey: ["crm-automation-runs", companyId], enabled: !!companyId,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("crm_automation_runs")
+        .select("id, automation_id, entity_kind, entity_id, status, error_message, result, created_at, automation:crm_automations(name)")
+        .eq("company_id", companyId!)
+        .order("created_at", { ascending: false })
+        .limit(50);
+      return data ?? [];
+    },
+    refetchInterval: 10000,
+  });
+
+  if (runs.length === 0) {
+    return (
+      <Card className="shadow-soft border-dashed">
+        <CardContent className="py-12">
+          <EmptyState icon={Zap} title="Sem execuções" description="As execuções aparecerão aqui assim que as regras forem disparadas." />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="shadow-soft">
+      <CardContent className="p-0">
+        <ul className="divide-y">
+          {runs.map((r: any) => (
+            <li key={r.id} className="p-3 flex items-center gap-3">
+              <Badge variant={r.status === "success" ? "default" : "destructive"}>{r.status}</Badge>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">{r.automation?.name ?? r.automation_id}</p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {r.entity_kind} • ação: {r.result?.action ?? "—"}{r.error_message ? ` • ${r.error_message}` : ""}
+                </p>
+              </div>
+              <span className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleString("pt-BR")}</span>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
+  );
+}
