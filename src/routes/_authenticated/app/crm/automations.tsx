@@ -92,39 +92,51 @@ function AutomationsPage() {
     <div className="space-y-6">
       <PageHeader title="Automações" description="Crie regras inteligentes para o CRM trabalhar por você." actions={<Button onClick={openNew}><Plus className="h-4 w-4 mr-1" /> Nova automação</Button>} />
 
-      {rules.length === 0 ? (
-        <Card className="shadow-soft border-dashed">
-          <CardContent className="py-12">
-            <EmptyState icon={Zap} title="Nenhuma automação criada" description="Crie regras que executam ações automaticamente. A engine de execução será ativada em breve." action={<Button onClick={openNew}>Criar primeira automação</Button>} />
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid gap-3">
-          {rules.map((r: any) => (
-            <Card key={r.id} className="shadow-soft">
-              <CardContent className="p-4 flex items-center gap-4">
-                <div className="h-10 w-10 rounded-md bg-gradient-soft flex items-center justify-center text-primary">
-                  <Zap className="h-5 w-5" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="font-medium">{r.name}</p>
-                    <Badge variant={r.is_active ? "default" : "secondary"}>{r.is_active ? "Ativa" : "Inativa"}</Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {TRIGGERS.find((t) => t.value === r.trigger_type)?.label} • {(r.actions ?? []).length} ação(ões) • Executada {r.run_count} vez(es)
-                  </p>
-                </div>
-                <Switch checked={r.is_active} onCheckedChange={() => toggle(r)} />
-                <Button size="icon" variant="ghost" onClick={() => openEdit(r)}><Edit2 className="h-4 w-4" /></Button>
-                <Button size="icon" variant="ghost" onClick={() => remove(r.id)}><Trash2 className="h-4 w-4" /></Button>
+      <Tabs defaultValue="rules">
+        <TabsList>
+          <TabsTrigger value="rules">Regras</TabsTrigger>
+          <TabsTrigger value="runs">Execuções</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="rules" className="mt-4 space-y-3">
+          {rules.length === 0 ? (
+            <Card className="shadow-soft border-dashed">
+              <CardContent className="py-12">
+                <EmptyState icon={Zap} title="Nenhuma automação criada" description="Crie regras que executam ações automaticamente em leads e negócios." action={<Button onClick={openNew}>Criar primeira automação</Button>} />
               </CardContent>
             </Card>
-          ))}
-        </div>
-      )}
+          ) : (
+            <div className="grid gap-3">
+              {rules.map((r: any) => (
+                <Card key={r.id} className="shadow-soft">
+                  <CardContent className="p-4 flex items-center gap-4">
+                    <div className="h-10 w-10 rounded-md bg-gradient-soft flex items-center justify-center text-primary">
+                      <Zap className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium">{r.name}</p>
+                        <Badge variant={r.is_active ? "default" : "secondary"}>{r.is_active ? "Ativa" : "Inativa"}</Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {TRIGGERS.find((t) => t.value === r.trigger_type)?.label} • {(r.actions ?? []).length} ação(ões) • Executada {r.run_count} vez(es)
+                      </p>
+                    </div>
+                    <Switch checked={r.is_active} onCheckedChange={() => toggle(r)} />
+                    <Button size="icon" variant="ghost" onClick={() => openEdit(r)}><Edit2 className="h-4 w-4" /></Button>
+                    <Button size="icon" variant="ghost" onClick={() => remove(r.id)}><Trash2 className="h-4 w-4" /></Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+          <p className="text-xs text-muted-foreground flex items-center gap-1"><Power className="h-3 w-3" /> Engine ativa: as regras são executadas automaticamente quando o gatilho ocorre.</p>
+        </TabsContent>
 
-      <p className="text-xs text-muted-foreground flex items-center gap-1"><Power className="h-3 w-3" /> A engine de execução em background é ativada na próxima sub-fase. As regras criadas agora ficam preparadas.</p>
+        <TabsContent value="runs" className="mt-4">
+          <RunsList companyId={companyId} />
+        </TabsContent>
+      </Tabs>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-xl">
