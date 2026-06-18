@@ -17,6 +17,7 @@ import {
   Store,
   CreditCard,
   KeyRound,
+  Smartphone,
 } from "lucide-react";
 import {
   Sidebar,
@@ -45,6 +46,7 @@ const mainNav = [
 
 const inboxNav = [
   { title: "Caixa de entrada", url: "/app/inbox", icon: Inbox, exact: true },
+  { title: "WhatsApp", url: "/app/inbox/whatsapp", icon: Smartphone },
   { title: "Filas", url: "/app/inbox/queues", icon: Workflow },
 ];
 

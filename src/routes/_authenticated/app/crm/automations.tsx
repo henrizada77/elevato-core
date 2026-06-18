@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { EmptyState } from "@/components/app/empty-state";
 import { toast } from "sonner";
 
@@ -91,39 +92,51 @@ function AutomationsPage() {
     <div className="space-y-6">
       <PageHeader title="Automações" description="Crie regras inteligentes para o CRM trabalhar por você." actions={<Button onClick={openNew}><Plus className="h-4 w-4 mr-1" /> Nova automação</Button>} />
 
-      {rules.length === 0 ? (
-        <Card className="shadow-soft border-dashed">
-          <CardContent className="py-12">
-            <EmptyState icon={Zap} title="Nenhuma automação criada" description="Crie regras que executam ações automaticamente. A engine de execução será ativada em breve." action={<Button onClick={openNew}>Criar primeira automação</Button>} />
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid gap-3">
-          {rules.map((r: any) => (
-            <Card key={r.id} className="shadow-soft">
-              <CardContent className="p-4 flex items-center gap-4">
-                <div className="h-10 w-10 rounded-md bg-gradient-soft flex items-center justify-center text-primary">
-                  <Zap className="h-5 w-5" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="font-medium">{r.name}</p>
-                    <Badge variant={r.is_active ? "default" : "secondary"}>{r.is_active ? "Ativa" : "Inativa"}</Badge>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {TRIGGERS.find((t) => t.value === r.trigger_type)?.label} • {(r.actions ?? []).length} ação(ões) • Executada {r.run_count} vez(es)
-                  </p>
-                </div>
-                <Switch checked={r.is_active} onCheckedChange={() => toggle(r)} />
-                <Button size="icon" variant="ghost" onClick={() => openEdit(r)}><Edit2 className="h-4 w-4" /></Button>
-                <Button size="icon" variant="ghost" onClick={() => remove(r.id)}><Trash2 className="h-4 w-4" /></Button>
+      <Tabs defaultValue="rules">
+        <TabsList>
+          <TabsTrigger value="rules">Regras</TabsTrigger>
+          <TabsTrigger value="runs">Execuções</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="rules" className="mt-4 space-y-3">
+          {rules.length === 0 ? (
+            <Card className="shadow-soft border-dashed">
+              <CardContent className="py-12">
+                <EmptyState icon={Zap} title="Nenhuma automação criada" description="Crie regras que executam ações automaticamente em leads e negócios." action={<Button onClick={openNew}>Criar primeira automação</Button>} />
               </CardContent>
             </Card>
-          ))}
-        </div>
-      )}
+          ) : (
+            <div className="grid gap-3">
+              {rules.map((r: any) => (
+                <Card key={r.id} className="shadow-soft">
+                  <CardContent className="p-4 flex items-center gap-4">
+                    <div className="h-10 w-10 rounded-md bg-gradient-soft flex items-center justify-center text-primary">
+                      <Zap className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium">{r.name}</p>
+                        <Badge variant={r.is_active ? "default" : "secondary"}>{r.is_active ? "Ativa" : "Inativa"}</Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {TRIGGERS.find((t) => t.value === r.trigger_type)?.label} • {(r.actions ?? []).length} ação(ões) • Executada {r.run_count} vez(es)
+                      </p>
+                    </div>
+                    <Switch checked={r.is_active} onCheckedChange={() => toggle(r)} />
+                    <Button size="icon" variant="ghost" onClick={() => openEdit(r)}><Edit2 className="h-4 w-4" /></Button>
+                    <Button size="icon" variant="ghost" onClick={() => remove(r.id)}><Trash2 className="h-4 w-4" /></Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+          <p className="text-xs text-muted-foreground flex items-center gap-1"><Power className="h-3 w-3" /> Engine ativa: as regras são executadas automaticamente quando o gatilho ocorre.</p>
+        </TabsContent>
 
-      <p className="text-xs text-muted-foreground flex items-center gap-1"><Power className="h-3 w-3" /> A engine de execução em background é ativada na próxima sub-fase. As regras criadas agora ficam preparadas.</p>
+        <TabsContent value="runs" className="mt-4">
+          <RunsList companyId={companyId} />
+        </TabsContent>
+      </Tabs>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-xl">
@@ -150,5 +163,52 @@ function AutomationsPage() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
+function RunsList({ companyId }: { companyId: string | null }) {
+  const { data: runs = [] } = useQuery({
+    queryKey: ["crm-automation-runs", companyId], enabled: !!companyId,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("crm_automation_runs")
+        .select("id, automation_id, entity_kind, entity_id, status, error_message, result, created_at, automation:crm_automations(name)")
+        .eq("company_id", companyId!)
+        .order("created_at", { ascending: false })
+        .limit(50);
+      return data ?? [];
+    },
+    refetchInterval: 10000,
+  });
+
+  if (runs.length === 0) {
+    return (
+      <Card className="shadow-soft border-dashed">
+        <CardContent className="py-12">
+          <EmptyState icon={Zap} title="Sem execuções" description="As execuções aparecerão aqui assim que as regras forem disparadas." />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card className="shadow-soft">
+      <CardContent className="p-0">
+        <ul className="divide-y">
+          {runs.map((r: any) => (
+            <li key={r.id} className="p-3 flex items-center gap-3">
+              <Badge variant={r.status === "success" ? "default" : "destructive"}>{r.status}</Badge>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">{r.automation?.name ?? r.automation_id}</p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {r.entity_kind} • ação: {r.result?.action ?? "—"}{r.error_message ? ` • ${r.error_message}` : ""}
+                </p>
+              </div>
+              <span className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleString("pt-BR")}</span>
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+    </Card>
   );
 }
