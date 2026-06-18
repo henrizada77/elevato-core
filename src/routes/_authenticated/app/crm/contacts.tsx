@@ -28,11 +28,21 @@ function ContactsPage() {
 
   const { data: items = [] } = useQuery({
     queryKey: ["crm-contacts", companyId], enabled: !!companyId,
-    queryFn: async () => { const { data } = await supabase.from("crm_contacts").select("*, crm_companies(name)").eq("company_id", companyId!).order("name"); return data ?? []; }
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("crm_contacts")
+        .select("id,name,role,email,phone,whatsapp,crm_company_id,crm_companies(name)")
+        .eq("company_id", companyId!)
+        .order("name");
+      return data ?? [];
+    },
   });
   const { data: companies = [] } = useQuery({
     queryKey: ["crm-co-opts", companyId], enabled: !!companyId,
-    queryFn: async () => { const { data } = await supabase.from("crm_companies").select("id,name").eq("company_id", companyId!); return data ?? []; }
+    queryFn: async () => {
+      const { data } = await supabase.from("crm_companies").select("id,name").eq("company_id", companyId!);
+      return data ?? [];
+    },
   });
 
   const save = async () => {
@@ -62,7 +72,17 @@ function ContactsPage() {
                   <TableCell>{c.phone || c.whatsapp || "—"}</TableCell>
                   <TableCell className="text-right">
                     <Button size="icon" variant="ghost" onClick={() => { setEditing(c); setForm(c); setOpen(true); }}><Edit2 className="h-4 w-4" /></Button>
-                    <Button size="icon" variant="ghost" onClick={async () => { if (!confirm("Excluir?")) return; await supabase.from("crm_contacts").delete().eq("id", c.id); qc.invalidateQueries({ queryKey: ["crm-contacts"] }); }}><Trash2 className="h-4 w-4" /></Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      onClick={async () => {
+                        if (!confirm("Excluir?")) return;
+                        await supabase.from("crm_contacts").delete().eq("id", c.id);
+                        qc.invalidateQueries({ queryKey: ["crm-contacts"] });
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

@@ -42,7 +42,7 @@ function InboxPage() {
     enabled: !!companyId,
     queryFn: async () => {
       let q = supabase.from("inbox_conversations")
-        .select("*, inbox_queues(name,color), inbox_channels(kind,name)")
+        .select("id,contact_name,contact_phone,contact_email,last_message_at,last_message_preview,unread_count,assignee_id,status,inbox_queues(name,color),inbox_channels(kind,name)")
         .eq("company_id", companyId!)
         .order("last_message_at", { ascending: false, nullsFirst: false })
         .order("created_at", { ascending: false })

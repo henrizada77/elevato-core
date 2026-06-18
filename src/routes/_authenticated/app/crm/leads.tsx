@@ -22,14 +22,19 @@ export const Route = createFileRoute("/_authenticated/app/crm/leads")({
 function LeadsPage() {
   const companyId = useCompanyId();
   const [search, setSearch] = useState("");
-  const [drawerLead, setDrawerLead] = useState<string | "new" | null>(null);
+  const [drawerLead, setDrawerLead] = useState<string | null>(null);
   const [importOpen, setImportOpen] = useState(false);
 
   const { data: leads = [] } = useQuery({
     queryKey: ["crm-leads", companyId, search],
     enabled: !!companyId,
     queryFn: async () => {
-      let q = supabase.from("crm_leads").select("*").eq("company_id", companyId!).eq("archived", false).order("created_at", { ascending: false });
+      let q = supabase
+        .from("crm_leads")
+        .select("id,name,company_text,email,phone,whatsapp,city,state,estimated_value,status,created_at")
+        .eq("company_id", companyId!)
+        .eq("archived", false)
+        .order("created_at", { ascending: false });
       if (search) q = q.or(`name.ilike.%${search}%,email.ilike.%${search}%,phone.ilike.%${search}%,company_text.ilike.%${search}%`);
       const { data, error } = await q;
       if (error) throw error;

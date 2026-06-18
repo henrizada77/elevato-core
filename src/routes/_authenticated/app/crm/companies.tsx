@@ -29,7 +29,11 @@ function CompaniesPage() {
     queryKey: ["crm-co", companyId],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data, error } = await supabase.from("crm_companies").select("*").eq("company_id", companyId!).order("name");
+      const { data, error } = await supabase
+        .from("crm_companies")
+        .select("id,name,segment,website,cnpj,address,city,state,phone,email")
+        .eq("company_id", companyId!)
+        .order("name");
       if (error) throw error;
       return data;
     },
@@ -46,7 +50,11 @@ function CompaniesPage() {
     qc.invalidateQueries({ queryKey: ["crm-co"] });
     setOpen(false);
   };
-  const remove = async (id: string) => { if (!confirm("Excluir?")) return; await supabase.from("crm_companies").delete().eq("id", id); qc.invalidateQueries({ queryKey: ["crm-co"] }); };
+  const remove = async (id: string) => {
+    if (!confirm("Excluir?")) return;
+    await supabase.from("crm_companies").delete().eq("id", id);
+    qc.invalidateQueries({ queryKey: ["crm-co"] });
+  };
 
   return (
     <div className="space-y-6">

@@ -34,7 +34,11 @@ function CustomersPage() {
     queryKey: ["crm-customers", companyId],
     enabled: !!companyId,
     queryFn: async () => {
-      const { data, error } = await supabase.from("crm_customers").select("*").eq("company_id", companyId!).order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("crm_customers")
+        .select("id,name,email,phone,whatsapp,document,job_title,city,state,created_at")
+        .eq("company_id", companyId!)
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
