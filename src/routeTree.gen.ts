@@ -29,6 +29,7 @@ import { Route as AuthenticatedAppInboxIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedAppCrmIndexRouteImport } from './routes/_authenticated/app/crm/index'
 import { Route as AuthenticatedAppSettingsBillingRouteImport } from './routes/_authenticated/app/settings/billing'
 import { Route as AuthenticatedAppSettingsAiRouteImport } from './routes/_authenticated/app/settings/ai'
+import { Route as AuthenticatedAppInboxWhatsappRouteImport } from './routes/_authenticated/app/inbox/whatsapp'
 import { Route as AuthenticatedAppInboxQueuesRouteImport } from './routes/_authenticated/app/inbox/queues'
 import { Route as AuthenticatedAppCrmTagsRouteImport } from './routes/_authenticated/app/crm/tags'
 import { Route as AuthenticatedAppCrmSettingsRouteImport } from './routes/_authenticated/app/crm/settings'
@@ -147,6 +148,12 @@ const AuthenticatedAppSettingsAiRoute =
     path: '/ai',
     getParentRoute: () => AuthenticatedAppSettingsRoute,
   } as any)
+const AuthenticatedAppInboxWhatsappRoute =
+  AuthenticatedAppInboxWhatsappRouteImport.update({
+    id: '/inbox/whatsapp',
+    path: '/inbox/whatsapp',
+    getParentRoute: () => AuthenticatedAppRouteRoute,
+  } as any)
 const AuthenticatedAppInboxQueuesRoute =
   AuthenticatedAppInboxQueuesRouteImport.update({
     id: '/inbox/queues',
@@ -231,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/app/crm/settings': typeof AuthenticatedAppCrmSettingsRoute
   '/app/crm/tags': typeof AuthenticatedAppCrmTagsRoute
   '/app/inbox/queues': typeof AuthenticatedAppInboxQueuesRoute
+  '/app/inbox/whatsapp': typeof AuthenticatedAppInboxWhatsappRoute
   '/app/settings/ai': typeof AuthenticatedAppSettingsAiRoute
   '/app/settings/billing': typeof AuthenticatedAppSettingsBillingRoute
   '/app/crm/': typeof AuthenticatedAppCrmIndexRoute
@@ -261,6 +269,7 @@ export interface FileRoutesByTo {
   '/app/crm/settings': typeof AuthenticatedAppCrmSettingsRoute
   '/app/crm/tags': typeof AuthenticatedAppCrmTagsRoute
   '/app/inbox/queues': typeof AuthenticatedAppInboxQueuesRoute
+  '/app/inbox/whatsapp': typeof AuthenticatedAppInboxWhatsappRoute
   '/app/settings/ai': typeof AuthenticatedAppSettingsAiRoute
   '/app/settings/billing': typeof AuthenticatedAppSettingsBillingRoute
   '/app/crm': typeof AuthenticatedAppCrmIndexRoute
@@ -294,6 +303,7 @@ export interface FileRoutesById {
   '/_authenticated/app/crm/settings': typeof AuthenticatedAppCrmSettingsRoute
   '/_authenticated/app/crm/tags': typeof AuthenticatedAppCrmTagsRoute
   '/_authenticated/app/inbox/queues': typeof AuthenticatedAppInboxQueuesRoute
+  '/_authenticated/app/inbox/whatsapp': typeof AuthenticatedAppInboxWhatsappRoute
   '/_authenticated/app/settings/ai': typeof AuthenticatedAppSettingsAiRoute
   '/_authenticated/app/settings/billing': typeof AuthenticatedAppSettingsBillingRoute
   '/_authenticated/app/crm/': typeof AuthenticatedAppCrmIndexRoute
@@ -327,6 +337,7 @@ export interface FileRouteTypes {
     | '/app/crm/settings'
     | '/app/crm/tags'
     | '/app/inbox/queues'
+    | '/app/inbox/whatsapp'
     | '/app/settings/ai'
     | '/app/settings/billing'
     | '/app/crm/'
@@ -357,6 +368,7 @@ export interface FileRouteTypes {
     | '/app/crm/settings'
     | '/app/crm/tags'
     | '/app/inbox/queues'
+    | '/app/inbox/whatsapp'
     | '/app/settings/ai'
     | '/app/settings/billing'
     | '/app/crm'
@@ -389,6 +401,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/crm/settings'
     | '/_authenticated/app/crm/tags'
     | '/_authenticated/app/inbox/queues'
+    | '/_authenticated/app/inbox/whatsapp'
     | '/_authenticated/app/settings/ai'
     | '/_authenticated/app/settings/billing'
     | '/_authenticated/app/crm/'
@@ -549,6 +562,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppSettingsAiRouteImport
       parentRoute: typeof AuthenticatedAppSettingsRoute
     }
+    '/_authenticated/app/inbox/whatsapp': {
+      id: '/_authenticated/app/inbox/whatsapp'
+      path: '/inbox/whatsapp'
+      fullPath: '/app/inbox/whatsapp'
+      preLoaderRoute: typeof AuthenticatedAppInboxWhatsappRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
     '/_authenticated/app/inbox/queues': {
       id: '/_authenticated/app/inbox/queues'
       path: '/inbox/queues'
@@ -654,6 +674,7 @@ interface AuthenticatedAppRouteRouteChildren {
   AuthenticatedAppCrmSettingsRoute: typeof AuthenticatedAppCrmSettingsRoute
   AuthenticatedAppCrmTagsRoute: typeof AuthenticatedAppCrmTagsRoute
   AuthenticatedAppInboxQueuesRoute: typeof AuthenticatedAppInboxQueuesRoute
+  AuthenticatedAppInboxWhatsappRoute: typeof AuthenticatedAppInboxWhatsappRoute
   AuthenticatedAppCrmIndexRoute: typeof AuthenticatedAppCrmIndexRoute
   AuthenticatedAppInboxIndexRoute: typeof AuthenticatedAppInboxIndexRoute
   AuthenticatedAppCrmPipelinesPipelineIdRoute: typeof AuthenticatedAppCrmPipelinesPipelineIdRoute
@@ -676,6 +697,7 @@ const AuthenticatedAppRouteRouteChildren: AuthenticatedAppRouteRouteChildren = {
   AuthenticatedAppCrmSettingsRoute: AuthenticatedAppCrmSettingsRoute,
   AuthenticatedAppCrmTagsRoute: AuthenticatedAppCrmTagsRoute,
   AuthenticatedAppInboxQueuesRoute: AuthenticatedAppInboxQueuesRoute,
+  AuthenticatedAppInboxWhatsappRoute: AuthenticatedAppInboxWhatsappRoute,
   AuthenticatedAppCrmIndexRoute: AuthenticatedAppCrmIndexRoute,
   AuthenticatedAppInboxIndexRoute: AuthenticatedAppInboxIndexRoute,
   AuthenticatedAppCrmPipelinesPipelineIdRoute:
