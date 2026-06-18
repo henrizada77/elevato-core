@@ -17,6 +17,7 @@ import {
   Store,
   CreditCard,
   KeyRound,
+  Smartphone,
 } from "lucide-react";
 import {
   Sidebar,
