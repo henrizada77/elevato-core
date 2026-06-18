@@ -1,63 +1,41 @@
-# Fase 4 — Business Management & Analytics
+## Plano antes da Etapa 4
 
-Escopo grande. Vou dividir em 4 sub-fases independentes e revisáveis, todas reaproveitando arquitetura, Design System, RLS por `company_id` e componentes já existentes (sem recriar nada).
+Quatro entregas focadas, reutilizando o que já existe.
 
-## Sub-fase 4.A — Schema base (1 migration)
+### 1. Engine de Automações (CRM)
+A UI em `/app/crm/automations` já cria regras (`crm_automations`). Falta executá-las.
 
-Novas tabelas em `public` (todas com `company_id`, RLS via `is_company_member`, GRANTs, triggers `set_updated_at`):
+- **Migration**: tabela `crm_automation_runs` (log de execuções: rule_id, entity, status, error, payload) + função `crm_run_automation(rule_id uuid, entity_kind text, entity_id uuid, payload jsonb)` SECURITY DEFINER que aplica as ações suportadas (`create_task` → `mgmt_tasks`, `add_tag` → `crm_*_tags`, `assign_owner` → update, `send_notification` → `mgmt_notifications`, `convert_to_customer` → `crm_convert_lead_to_customer`).
+- **Triggers** em `crm_leads` / `crm_deals` que casam evento → regras ativas da empresa e chamam `crm_run_automation` para cada uma, registrando em `crm_automation_runs`.
+- Aba "Execuções" em `/app/crm/automations` mostrando histórico (últimas 50, com status e erro).
 
-- `mgmt_teams` + `mgmt_team_members` — equipes e vínculos.
-- `mgmt_goals` — metas (escopo: company/team/user, tipo: revenue/deals/leads/conversion, período mensal/anual, target, progresso calculado).
-- `mgmt_commission_rules` — regras (escopo user/team/pipeline/product-stub, tipo percent/fixed, valor, ativo).
-- `mgmt_commissions` — comissões geradas por deal ganho (deal_id, user_id, base, valor, status pending/paid/partial/canceled, paid_at).
-- `mgmt_tasks` — tarefas (título, descrição, prioridade, status, due_at, owner_id, entidades vinculadas lead/customer/deal, archived).
-- `mgmt_appointments` — agenda (tipo meeting/visit/reminder, start_at/end_at, location, attendees jsonb, google_event_id stub).
-- `mgmt_notifications` — central (user_id destinatário, channel system/email/whatsapp/push, kind, title, body, read_at, related entity).
-- `mgmt_dashboard_layouts` — layout por usuário (user_id, widgets jsonb).
-- `mgmt_reports` — relatórios salvos (nome, tipo, filtros jsonb, columns jsonb, owner_id).
-- `mgmt_activity_log` — histórico imutável (actor_id, action, entity_kind, entity_id, data jsonb) — só INSERT permitido via policy.
-- `mgmt_admin_logs` — logs administrativos (login/logout/export/import/config).
+### 2. Painel Master expandido (SaaS)
+Adicionar a `/app/master` métricas reais e abas:
 
-Trigger em `crm_deals`: ao mudar para `won`, gera linhas em `mgmt_commissions` aplicando regras ativas + notificação.
+- **KPIs**: MRR estimado (soma de `billing_plans.price_monthly` por assinatura ativa), trials ativos, trials expirando 7d, churn 30d, módulos ativados, tickets de IA usados (placeholder 0 por enquanto).
+- **Tabs**: Empresas (já existe) · Assinaturas (lista `billing_subscriptions` com plano, status, período) · Módulos (`company_modules` ativados por empresa) · Atividade (últimos eventos de `mgmt_activity_log`).
+- Filtros por status; ações: suspender/reativar empresa (update em `companies.status`).
 
-## Sub-fase 4.B — Dashboard Executivo + KPIs + Filtros
+### 3. UI real para sessões WhatsApp + QR Code
+Tabela `wa_sessions` já existe. Criar:
 
-- `/app/dashboard` (substituindo o atual ou expandindo): grid de widgets configuráveis com `react-grid-layout` (já em uso? — se não, usar grid Tailwind + drag simples via dnd-kit já instalado).
-- Componentes: `KpiCard` (valor + delta vs período anterior + sparkline), `FiltersBar` global (período/usuário/equipe/funil/origem/tag/cidade/estado/status) persistida em `localStorage` por usuário.
-- Server fns em `src/lib/mgmt/analytics.functions.ts`: `getExecutiveKpis`, `getKpisByUser`, `getKpisByTeam`, `getRevenueSeries`, `getFunnelDistribution`, `getLeadSourceMix`, `getOnlineUsers` (heartbeat via `profiles.last_seen_at`).
-- Widgets disponíveis (toggláveis): Receita Total/Mensal/Prevista, Negócios Abertos/Ganhos/Perdidos, Leads, Clientes Ativos, Conversão, Ticket Médio, Tempo Médio Fechamento, Atendimentos, Usuários Online.
-- Layout salvo em `mgmt_dashboard_layouts`.
+- Rota `/app/inbox/whatsapp` com lista de sessões, botão "Nova conexão" (cria com status `pending_qr`).
+- **Componente QR**: modal que faz polling a cada 3s em `getWaSession(id)` (server fn nova). Renderiza QR via `qrcode` lib quando `qr_code` presente; mostra "Conectado" quando `status='connected'`; botão desconectar.
+- Server fn `simulateWaConnect(id)` (dev): preenche `qr_code` com payload fake e depois marca `connected` — placeholder até integração real Stevo. Documentado no código.
+- Webhook `/api/public/wa-webhook` (já existe) recebe `{ instanceId, status, qr }` e atualiza a sessão via service role.
 
-## Sub-fase 4.C — Metas, Comissões, Receita, Ranking, Produtividade
+### 4. Assistente usando credencial do usuário
+Já existe `/app/settings/ai` (OpenAI/Gemini/Anthropic com pgcrypto). O `/api/chat` hoje usa só Lovable AI Gateway.
 
-- `/app/mgmt/goals` — CRUD + barra de progresso (atingido/meta, dias restantes).
-- `/app/mgmt/commissions` — lista de comissões geradas + filtros + ações (marcar pago/parcial/cancelar) + regras em aba separada.
-- `/app/mgmt/revenue` — painel financeiro comercial (prevista/realizada/perdida, gráficos por vendedor/origem/funil/período).
-- `/app/mgmt/ranking` — tabs vendedores/equipes/funis/origens/clientes com ordenação dinâmica.
-- `/app/mgmt/productivity` — painel individual + comparativo equipe.
-- `/app/mgmt/tasks` — kanban + lista (reaproveita `KanbanBoard`).
-- `/app/agenda` — calendário (usar `react-day-picker` já presente + vista semanal própria) com CRUD de compromissos.
-- `/app/notifications` — central com filtros e marcar como lida; bell no header com contador.
+- Refatorar `src/routes/api/chat.ts`: ler credencial ativa da empresa (via `ai_decrypt_key`); se existir, usar `createOpenAICompatible` com o baseURL/model do provedor; senão, fallback para Lovable AI Gateway. Tudo server-side.
+- Em `/app/assistant` exibir badge "usando: OpenAI (gpt-4o-mini)" ou "usando: Lovable AI (padrão)" lido de uma nova server fn `getActiveAiProvider`.
 
-## Sub-fase 4.D — Central de Relatórios + Elevo Analytics + Logs
+### Ordem de execução
+1. Migration única (automation runs + triggers + função).
+2. Refactor `chat.ts` + badge no assistente.
+3. Página WhatsApp + componente QR (instalar `qrcode`).
+4. Painel Master expandido.
 
-- `/app/reports` — Central com catálogo: Leads, Clientes, Negócios, Funis, Conversões, Receitas, Comissões, Vendedores, Produtividade, Tags, Custom Fields, Origens. Cada relatório: filtros, seleção de colunas, ordenação, export PDF/Excel/CSV (reaproveita `src/lib/crm/export.ts`).
-- Relatórios salvos em `mgmt_reports`.
-- `/app/analytics` — **Elevo Analytics** com tabs: 📈 Comercial, 👥 Clientes, 💰 Financeiro, 🎯 Metas, 📊 Performance, 📋 Relatórios. Cada tab com filtros e gráficos Recharts próprios. Arquitetura pronta pra fontes externas (camada `src/lib/analytics/sources/` com adapters stub: meta-ads, google-ads, whatsapp, google-calendar).
-- `/app/admin/logs` — visualização de `mgmt_activity_log` + `mgmt_admin_logs` (só admin via `has_role`).
-- Hook `useActivityLog()` chamado em ações relevantes do app.
-- Sidebar atualizada: grupo "Gestão" (Dashboard, Metas, Comissões, Receita, Ranking, Produtividade, Tarefas, Agenda), grupo "Analytics" (Elevo Analytics, Relatórios), item Notificações no header.
+Depois disso, sigo direto para a **Etapa 4 (Dashboards, Metas, Comissões, Relatórios, Analytics)** começando pelo 4.B.
 
-## Detalhes técnicos
-
-- Todas as queries respeitam RLS (`is_company_member`) — sem service role em leituras de app.
-- Server fns via `createServerFn` + `requireSupabaseAuth` (já wired).
-- Gráficos: Recharts (já instalado). Drag de widgets: dnd-kit (já instalado).
-- Sem mocks finais — toda métrica deriva de dados reais; quando origem ainda não existe (ligações/mensagens), exibir card com estado "Em breve / integração necessária", sem números falsos.
-- Identidade visual e tokens semânticos preservados.
-
-## Sequência de execução
-
-Vou começar por **4.A (migration única)** agora. Depois 4.B → 4.C → 4.D em turnos separados, cada um revisável.
-
-Confirma e eu disparo a migration?
+Confirma para eu iniciar?
